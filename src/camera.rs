@@ -2,7 +2,7 @@ use crate::{
     maths::{Point3D, Rectangle3D, Vector3D},
     ray::Ray,
 };
-
+#[derive(Debug)]
 pub struct Camera {
     origin: Point3D,
     screen: Rectangle3D,
