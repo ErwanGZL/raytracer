@@ -38,7 +38,7 @@ impl Point3D {
 impl std::ops::Add for Point3D {
     type Output = Self;
 
-    fn add(self, rhs: Self) -> Self::Output {
+    fn add(self, rhs: Self) -> Self {
         Self {
             x: self.x + rhs.x,
             y: self.y + rhs.y,
@@ -50,7 +50,7 @@ impl std::ops::Add for Point3D {
 impl std::ops::Sub for Point3D {
     type Output = Self;
 
-    fn sub(self, rhs: Self) -> Self::Output {
+    fn sub(self, rhs: Self) -> Self {
         Self {
             x: self.x - rhs.x,
             y: self.y - rhs.y,
@@ -62,7 +62,7 @@ impl std::ops::Sub for Point3D {
 impl std::ops::Mul for Point3D {
     type Output = Self;
 
-    fn mul(self, rhs: Self) -> Self::Output {
+    fn mul(self, rhs: Self) -> Self {
         Self {
             x: self.x * rhs.x,
             y: self.y * rhs.y,
@@ -74,7 +74,7 @@ impl std::ops::Mul for Point3D {
 impl std::ops::Div for Point3D {
     type Output = Self;
 
-    fn div(self, rhs: Self) -> Self::Output {
+    fn div(self, rhs: Self) -> Self {
         Self {
             x: self.x / rhs.x,
             y: self.y / rhs.y,
