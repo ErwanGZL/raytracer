@@ -1,6 +1,6 @@
 use super::Vector3D;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct Point3D {
     x: f64,
     y: f64,
