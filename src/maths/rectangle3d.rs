@@ -1,24 +1,22 @@
-use super::{Point3D, Vector3D};
+use super::Vector3D;
 
 #[derive(Debug)]
 pub struct Rectangle3D {
-    origin: Point3D, // bottom-left corner
-    bottom_side: Vector3D,
-    left_side: Vector3D,
+    origin: Vector3D, // bottom-left corner
+    dimensions: Vector3D,
 }
 
 impl Rectangle3D {
-    pub fn new(origin: Point3D, bottom_side: Vector3D, left_side: Vector3D) -> Self {
+    pub fn new(origin: Vector3D, dimensions: Vector3D) -> Self {
         Self {
             origin,
-            bottom_side,
-            left_side,
+            dimensions,
         }
     }
-    pub fn point_at(&self, u: f64, v: f64) -> Point3D {
-        Point3D::new(
-            self.origin.x() + self.bottom_side.x() * u,
-            self.origin.y() + self.left_side.y() * v,
+    pub fn point_at(&self, u: f64, v: f64) -> Vector3D {
+        Vector3D::new(
+            self.origin.x() + self.dimensions.x() * u,
+            self.origin.y() + self.dimensions.y() * v,
             self.origin.z(),
         )
     }

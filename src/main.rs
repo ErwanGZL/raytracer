@@ -14,21 +14,19 @@ use std::io::Write;
 fn main() {
     let mut out = File::create("out.ppm").expect("create");
     const RESOLUTION_WIDTH: i32 = 500;
-    const RESOLUTION_HEIGHT: i32 = 500
-    ;
+    const RESOLUTION_HEIGHT: i32 = 500;
 
     writeln!(out, "P1\n{} {}", RESOLUTION_WIDTH, RESOLUTION_HEIGHT).expect("writeln");
 
     let camera = Camera::new(
-        Point3D::default(),
+        Vector3D::default(),
         Rectangle3D::new(
-            Point3D::new(-0.5, -0.5, 0.5),
-            Vector3D::new(1., 0., 0.),
-            Vector3D::new(0., 1., 0.),
+            Vector3D::new(-0.5, -0.5, 0.5),
+            Vector3D::new(1., 1., 0.),
         ),
     );
     println!("{:#?}", camera);
-    let sphere = Sphere::new(Point3D::new(0., 0., -1.), 0.5);
+    let sphere = Sphere::new(Vector3D::new(0., 0., -1.), 0.5);
     for y in 0..RESOLUTION_HEIGHT {
         let v = y as f64 * (1. / RESOLUTION_HEIGHT as f64);
         for x in 0..RESOLUTION_WIDTH {

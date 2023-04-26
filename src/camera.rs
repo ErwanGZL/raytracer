@@ -1,15 +1,16 @@
 use crate::{
-    maths::{Point3D, Rectangle3D, Vector3D},
+    maths::{Rectangle3D, Vector3D},
     ray::Ray,
 };
+
 #[derive(Debug)]
 pub struct Camera {
-    origin: Point3D,
+    origin: Vector3D,
     screen: Rectangle3D,
 }
 
 impl Camera {
-    pub fn new(origin: Point3D, screen: Rectangle3D) -> Self {
+    pub fn new(origin: Vector3D, screen: Rectangle3D) -> Self {
         Self { origin, screen }
     }
 

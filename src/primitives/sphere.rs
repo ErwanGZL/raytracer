@@ -3,12 +3,12 @@ use crate::Ray;
 
 #[derive(Debug)]
 pub struct Sphere {
-    center: Point3D,
+    center: Vector3D,
     radius: f64,
 }
 
 impl Sphere {
-    pub fn new(center: Point3D, radius: f64) -> Self {
+    pub fn new(center: Vector3D, radius: f64) -> Self {
         Sphere { center, radius }
     }
 

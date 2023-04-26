@@ -1,5 +1,3 @@
-use super::Point3D;
-
 #[derive(Debug, Clone, Copy)]
 pub struct Vector3D {
     x: f64,
@@ -7,6 +5,9 @@ pub struct Vector3D {
     z: f64,
 }
 
+/**
+ * Default
+ */
 impl Default for Vector3D {
     fn default() -> Self {
         Self {
@@ -27,9 +28,7 @@ impl Vector3D {
     pub fn z(&self) -> f64 {
         self.z
     }
-}
 
-impl Vector3D {
     pub fn new(x: f64, y: f64, z: f64) -> Vector3D {
         Self { x, y, z }
     }
@@ -88,13 +87,5 @@ impl std::ops::Div for Vector3D {
             y: self.y / rhs.y,
             z: self.z / rhs.z,
         }
-    }
-}
-
-impl std::ops::Add<Point3D> for Vector3D {
-    type Output = Point3D;
-
-    fn add(self, other: Point3D) -> Point3D {
-        other + self
     }
 }
