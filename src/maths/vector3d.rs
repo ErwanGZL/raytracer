@@ -5,9 +5,6 @@ pub struct Vector3D {
     z: f64,
 }
 
-/**
- * Default
- */
 impl Default for Vector3D {
     fn default() -> Self {
         Self {
