@@ -2,6 +2,7 @@ mod camera;
 mod maths;
 mod primitives;
 mod ray;
+mod scene;
 
 use camera::Camera;
 use maths::*;
@@ -11,6 +12,8 @@ use ray::Ray;
 use std::fs::File;
 use std::io::Write;
 
+use crate::scene::Scene;
+
 fn main() {
     let mut out = File::create("out.ppm").expect("create");
     const RESOLUTION_WIDTH: i32 = 500;
@@ -18,21 +21,20 @@ fn main() {
 
     writeln!(out, "P1\n{} {}", RESOLUTION_WIDTH, RESOLUTION_HEIGHT).expect("writeln");
 
-    let camera = Camera::new(
-        Vector3D::default(),
-        Rectangle3D::new(
-            Vector3D::new(-0.5, -0.5, 0.5),
-            Vector3D::new(1., 1., 0.),
+    let scene = Scene::new(
+        Camera::new(
+            Vector3D::default(),
+            Rectangle3D::new(Vector3D::new(-0.5, -0.5, 0.5), Vector3D::new(1., 1., 0.)),
         ),
+        vec![Box::new(Sphere::new(Vector3D::new(0., 0., -1.), 0.5))],
     );
-    println!("{:#?}", camera);
-    let sphere = Sphere::new(Vector3D::new(0., 0., -1.), 0.5);
+    println!("{:#?}", scene.camera());
     for y in 0..RESOLUTION_HEIGHT {
         let v = y as f64 * (1. / RESOLUTION_HEIGHT as f64);
         for x in 0..RESOLUTION_WIDTH {
             let u = x as f64 * (1. / RESOLUTION_WIDTH as f64);
-            let ray = camera.ray(u, v);
-            if sphere.hits(&ray) {
+            let ray = scene.camera().ray(u, v);
+            if scene.primitives()[0].hits(&ray) {
                 writeln!(out, "1").expect("write");
             } else {
                 writeln!(out, "0").expect("write");

@@ -1,3 +1,4 @@
+use super::Primitive;
 use crate::maths::*;
 use crate::Ray;
 
@@ -11,8 +12,10 @@ impl Sphere {
     pub fn new(center: Vector3D, radius: f64) -> Self {
         Sphere { center, radius }
     }
+}
 
-    pub fn hits(&self, ray: &Ray) -> bool {
+impl Primitive for Sphere {
+    fn hits(&self, ray: &Ray) -> bool {
         let d = ray.direction();
         let o = ray.origin();
 
