@@ -1,4 +1,7 @@
+#![cfg_attr(debug_assertions, allow(dead_code, unused_imports))]
+
 mod camera;
+mod color;
 mod maths;
 mod primitives;
 mod ray;
@@ -12,6 +15,7 @@ use ray::Ray;
 use std::fs::File;
 use std::io::Write;
 
+use crate::color::Color;
 use crate::scene::Scene;
 
 fn main() {
@@ -27,8 +31,16 @@ fn main() {
             Rectangle3D::new(Vector3D::new(-0.5, -0.5, 0.5), Vector3D::new(1., 1., 0.)),
         ),
         vec![
-            Box::new(Sphere::new(Vector3D::new(0.2, 0., 1.), 0.1)),
-            Box::new(Sphere::new(Vector3D::new(-0.2, 0., 1.), 0.1)),
+            Box::new(Sphere::new(
+                Vector3D::new(0.2, 0., 1.),
+                0.1,
+                Color::new(255, 0, 0, 100),
+            )),
+            Box::new(Sphere::new(
+                Vector3D::new(-0.2, 0., 1.),
+                0.1,
+                Color::new(0, 255, 0, 100),
+            )),
         ],
     );
     for y in 0..RESOLUTION_HEIGHT {

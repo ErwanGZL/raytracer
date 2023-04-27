@@ -8,10 +8,7 @@ pub struct Rectangle3D {
 
 impl Rectangle3D {
     pub fn new(origin: Vector3D, dimensions: Vector3D) -> Self {
-        Self {
-            origin,
-            dimensions,
-        }
+        Self { origin, dimensions }
     }
     pub fn point_at(&self, u: f64, v: f64) -> Vector3D {
         Vector3D::new(

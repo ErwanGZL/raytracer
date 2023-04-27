@@ -1,4 +1,5 @@
 use super::Primitive;
+use crate::color::Color;
 use crate::maths::*;
 use crate::Ray;
 
@@ -6,15 +7,24 @@ use crate::Ray;
 pub struct Sphere {
     center: Vector3D,
     radius: f64,
+    color: Color,
 }
 
 impl Sphere {
-    pub fn new(center: Vector3D, radius: f64) -> Self {
-        Sphere { center, radius }
+    pub fn new(center: Vector3D, radius: f64, color: Color) -> Self {
+        Sphere {
+            center,
+            radius,
+            color,
+        }
     }
 }
 
 impl Primitive for Sphere {
+    fn color(&self) -> crate::color::Color {
+        self.color
+    }
+
     fn hits(&self, ray: &Ray) -> Vec<Vector3D> {
         let d = ray.direction();
         let o = ray.origin();
