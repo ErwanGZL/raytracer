@@ -14,6 +14,10 @@ impl Camera {
         Self { origin, screen }
     }
 
+    pub fn origin(&self) -> Vector3D {
+        self.origin
+    }
+
     pub fn ray(&self, u: f64, v: f64) -> Ray {
         let p = self.screen.point_at(u, v);
         Ray::new(self.origin, Vector3D::new(p.x(), p.y(), p.z()))

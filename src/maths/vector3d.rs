@@ -37,6 +37,11 @@ impl Vector3D {
     pub fn dot(&self, other: &Self) -> f64 {
         self.x * other.x + self.y * other.y + self.z * other.z
     }
+
+    pub fn distance(&self, other: Self) -> f64 {
+        ((other.x - self.x).powi(2) + (other.y - self.y).powi(2) + (other.z - self.z).powi(2))
+            .sqrt()
+    }
 }
 
 impl std::ops::Add for Vector3D {
