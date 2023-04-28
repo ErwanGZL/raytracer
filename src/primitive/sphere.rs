@@ -1,7 +1,6 @@
+use crate::{math::Vector3D, material::Color, ray::Ray};
+
 use super::Primitive;
-use crate::color::Color;
-use crate::maths::*;
-use crate::Ray;
 
 #[derive(Debug)]
 pub struct Sphere {
@@ -21,7 +20,7 @@ impl Sphere {
 }
 
 impl Primitive for Sphere {
-    fn color(&self) -> crate::color::Color {
+    fn color(&self) -> crate::material::Color {
         self.color
     }
 
@@ -29,11 +28,11 @@ impl Primitive for Sphere {
         let d = ray.direction();
         let o = ray.origin();
 
-        let a = d.x().powi(2) + d.y().powi(2) + d.z().powi(2);
-        let b = 2. * (d.x() * (o.x() - self.center.x()))
+        let a: f64 = d.x().powi(2) + d.y().powi(2) + d.z().powi(2);
+        let b: f64 = 2. * (d.x() * (o.x() - self.center.x()))
             + 2. * (d.y() * (o.y() - self.center.y()))
             + 2. * (d.z() * (o.z() - self.center.z()));
-        let c = o.x().powi(2)
+        let c: f64 = o.x().powi(2)
             + o.y().powi(2)
             + o.z().powi(2)
             + self.center.x().powi(2)

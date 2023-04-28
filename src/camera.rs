@@ -1,5 +1,5 @@
 use crate::{
-    maths::{Rectangle3D, Vector3D},
+    math::{Rectangle3D, Vector3D},
     ray::Ray,
 };
 
