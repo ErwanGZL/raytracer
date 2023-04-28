@@ -1,20 +1,20 @@
 #![cfg_attr(debug_assertions, allow(dead_code, unused_imports))]
 
 mod camera;
+mod material;
 mod math;
 mod primitive;
-mod scene;
 mod ray;
-mod material;
+mod scene;
 
+use camera::Camera;
+use material::{Color, Material};
+use math::Rectangle3D;
+use math::Vector3D;
+use primitive::Sphere;
+use scene::Scene;
 use std::fs::File;
 use std::io::Write;
-use scene::Scene;
-use camera::Camera;
-use material::Color;
-use math::Vector3D;
-use math::Rectangle3D;
-use primitive::Sphere;
 
 pub fn render_image() {
     let mut out = File::create("out.ppm").expect("create");
@@ -30,8 +30,16 @@ pub fn render_image() {
             Rectangle3D::new(Vector3D::new(-0.5, -0.5, 0.5), Vector3D::new(1., 1., 0.)),
         ),
         vec![
-            Box::new(Sphere::new(Vector3D::new(0.2, 0., 1.), 0.1, Color::red())),
-            Box::new(Sphere::new(Vector3D::new(-0.2, 0., 1.), 0.1, Color::blue())),
+            Box::new(Sphere::new(
+                Vector3D::new(0.2, 0., 1.),
+                0.1,
+                Material::new(Color::red(), 100.),
+            )),
+            Box::new(Sphere::new(
+                Vector3D::new(-0.2, 0., 1.),
+                0.1,
+                Material::new(Color::blue(), 100.),
+            )),
         ],
     );
     for y in 0..RESOLUTION_HEIGHT {

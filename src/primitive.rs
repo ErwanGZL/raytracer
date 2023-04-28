@@ -1,9 +1,9 @@
 mod sphere;
 pub use sphere::Sphere;
 
-use crate::{material::Color, math::Vector3D, ray::Ray};
+use crate::{material::Material, math::Vector3D, ray::Ray};
 
 pub trait Primitive {
-    fn color(&self) -> Color;
+    fn material(&self) -> Material;
     fn hits(&self, ray: &Ray) -> Vec<Vector3D>;
 }

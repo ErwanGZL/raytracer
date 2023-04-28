@@ -1,4 +1,4 @@
-use crate::{camera::Camera, primitive::Primitive, material::Color};
+use crate::{camera::Camera, material::Color, primitive::Primitive};
 
 pub struct Scene {
     bg_color: Color,
@@ -8,7 +8,11 @@ pub struct Scene {
 
 impl Scene {
     pub fn new(bg_color: Color, camera: Camera, primitives: Vec<Box<dyn Primitive>>) -> Self {
-        Scene { bg_color, camera, primitives }
+        Scene {
+            bg_color,
+            camera,
+            primitives,
+        }
     }
 
     pub fn camera(&self) -> &Camera {
