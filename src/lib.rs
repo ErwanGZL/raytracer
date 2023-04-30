@@ -24,19 +24,19 @@ pub fn render_image() {
     writeln!(out, "P3\n{} {}\n255", RESOLUTION_WIDTH, RESOLUTION_HEIGHT).expect("writeln");
 
     let scene = Scene::new(
-        Color::green(),
+        Color::white(),
         Camera::new(
             Vector3D::default(),
-            Rectangle3D::new(Vector3D::new(-0.5, -0.5, 0.5), Vector3D::new(1., 1., 0.)),
+            Rectangle3D::new(Vector3D::new(-0.5, -0.5, -0.5), Vector3D::new(1., 1., 0.)),
         ),
         vec![
             Box::new(Sphere::new(
-                Vector3D::new(0.2, 0., 1.),
+                Vector3D::new(0.1, 0., -1.1),
                 0.1,
                 Material::new(Color::red(), 100.),
             )),
             Box::new(Sphere::new(
-                Vector3D::new(-0.2, 0., 1.),
+                Vector3D::new(0., 0., -1.2),
                 0.1,
                 Material::new(Color::blue(), 100.),
             )),
@@ -51,25 +51,28 @@ pub fn render_image() {
     }
 }
 
-fn get_closest_point(camera: &Camera, v: &Vec<Vector3D>) -> Option<Color> {
+fn get_closest_point(
+    camera: &Camera,
+    v: &Vec<(Vector3D, Material)>,
+) -> Option<(Vector3D, Material)> {
     match v
         .iter()
-        .map(|&x| (x.distance(camera.origin()), x))
+        .map(|&x| (x.0.distance(camera.origin()), x))
         .min_by(|x, y| x.0.total_cmp(&y.0))
     {
-        Some((_, _p)) => todo!(),
+        Some((_, point)) => Some(point),
         None => None,
     }
 }
 
 fn casting(scene: &Scene, output: &mut File, u: f64, v: f64) {
     let ray = scene.camera().ray(u, v);
-    let mut v: Vec<Vector3D> = Vec::new();
+    let mut v: Vec<(Vector3D, Material)> = Vec::new();
     for prim in scene.primitives() {
         v.extend(prim.hits(&ray));
     }
     match get_closest_point(scene.camera(), &v) {
-        Some(_) => todo!(),
+        Some((_, material)) => material.color().write(output),
         None => scene.bg_color().write(output),
     };
 }
