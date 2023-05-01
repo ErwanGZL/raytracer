@@ -42,6 +42,15 @@ impl Vector3D {
         ((other.x - self.x).powi(2) + (other.y - self.y).powi(2) + (other.z - self.z).powi(2))
             .sqrt()
     }
+
+    pub fn normalize(&self) -> Self {
+        let length = self.length();
+        Self {
+            x: self.x / length,
+            y: self.y / length,
+            z: self.z / length,
+        }
+    }
 }
 
 impl std::ops::Add for Vector3D {
