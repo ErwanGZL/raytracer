@@ -24,7 +24,11 @@ impl Primitive for Sphere {
         self.material
     }
 
-    fn hits(&self, ray: &Ray) -> Vec<(Vector3D, Material)> {
+    fn normal(&self, point: Vector3D) -> Vector3D {
+        (point - self.center).normalize()
+    }
+
+    fn hits(&self, ray: &Ray) -> Vec<(Vector3D, &dyn Primitive)> {
         let d = ray.direction();
         let o = ray.origin();
 
@@ -42,20 +46,20 @@ impl Primitive for Sphere {
             - self.radius.powi(2);
 
         let delta = b.powi(2) - 4. * a * c;
-        let mut v: Vec<(Vector3D, Material)> = Vec::new();
+        let mut v: Vec<(Vector3D, &dyn Primitive)> = Vec::new();
         if delta > 0. {
             let x1 = (-b + delta.sqrt()) / (2. * a);
             let x2 = (-b - delta.sqrt()) / (2. * a);
             if x1 > 0. {
                 v.push((
                     Vector3D::new(o.x() + x1 * d.x(), o.y() + x1 * d.y(), o.z() + x1 * d.z()),
-                    self.material,
+                    self,
                 ));
             }
             if x2 > 0. {
                 v.push((
                     Vector3D::new(o.x() + x2 * d.x(), o.y() + x2 * d.y(), o.z() + x2 * d.z()),
-                    self.material,
+                    self,
                 ));
             }
         } else if delta == 0. {
@@ -63,7 +67,7 @@ impl Primitive for Sphere {
             if x0 > 0. {
                 v.push((
                     Vector3D::new(o.x() + x0 * d.x(), o.y() + x0 * d.y(), o.z() + x0 * d.z()),
-                    self.material,
+                    self,
                 ));
             }
         }

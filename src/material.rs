@@ -14,7 +14,7 @@ impl Material {
             transparency,
         }
     }
-    pub fn color(&self) -> &Color {
-        &self.color
+    pub fn color(&self) -> Color {
+        self.color
     }
 }

@@ -19,6 +19,12 @@ impl Ray {
     pub fn new(origin: Vector3D, direction: Vector3D) -> Self {
         Self { origin, direction }
     }
+    pub fn from_points(origin: Vector3D, target: Vector3D) -> Self {
+        Self {
+            origin,
+            direction: (target - origin).normalize(),
+        }
+    }
     pub fn origin(&self) -> &Vector3D {
         &self.origin
     }
