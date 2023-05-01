@@ -9,6 +9,7 @@ mod scene;
 
 use camera::Camera;
 use maths::*;
+use primitives::Plane;
 use primitives::Sphere;
 use ray::Ray;
 
@@ -23,7 +24,7 @@ fn main() {
     const RESOLUTION_WIDTH: i32 = 500;
     const RESOLUTION_HEIGHT: i32 = 500;
 
-    writeln!(out, "P1\n{} {}", RESOLUTION_WIDTH, RESOLUTION_HEIGHT).expect("writeln");
+    writeln!(out, "P3\n{} {}\n255", RESOLUTION_WIDTH, RESOLUTION_HEIGHT).expect("writeln");
 
     let scene = Scene::new(
         Camera::new(
@@ -40,6 +41,11 @@ fn main() {
                 Vector3D::new(-0.2, 0., 1.),
                 0.1,
                 Color::new(0, 255, 0, 100),
+            )),
+            Box::new(Plane::new(
+                Vector3D::new(0., 0., -0.6),
+                Vector3D::new(0., 10., -1.),
+                Color::new(0, 0, 255, 100),
             )),
         ],
     );
@@ -70,7 +76,7 @@ fn casting(scene: &Scene, output: &mut File, u: f64, v: f64) {
         v.extend(prim.hits(&ray));
     }
     match get_closest_point(scene.camera(), &v) {
-        Some(_) => writeln!(output, "1").expect("write"),
-        None => writeln!(output, "0").expect("write"),
+        Some(_) => writeln!(output, "255 0 0").expect("write"), // TODO : put the good color
+        None => writeln!(output, "0 0 0").expect("write"),
     };
 }

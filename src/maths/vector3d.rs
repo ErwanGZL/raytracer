@@ -80,6 +80,26 @@ impl std::ops::Mul for Vector3D {
     }
 }
 
+impl std::ops::Mul<f64> for Vector3D {
+    type Output = Vector3D;
+
+    fn mul(self, scalar: f64) -> Vector3D {
+        Vector3D {
+            x: self.x * scalar,
+            y: self.y * scalar,
+            z: self.z * scalar,
+        }
+    }
+}
+
+impl std::ops::Mul<Vector3D> for f64 {
+    type Output = Vector3D;
+
+    fn mul(self, vector: Vector3D) -> Vector3D {
+        vector * self
+    }
+}
+
 impl std::ops::Div for Vector3D {
     type Output = Self;
 
