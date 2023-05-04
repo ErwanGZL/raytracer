@@ -13,6 +13,7 @@ use dot_light::DotLight;
 use material::{Color, Material};
 use math::Rectangle3D;
 use math::Vector3D;
+use primitive::Cone;
 use primitive::Primitive;
 use primitive::Sphere;
 use ray::Ray;
@@ -35,19 +36,18 @@ pub fn render_image() {
             Vector3D::default(),
             Rectangle3D::new(Vector3D::new(-0.5, -0.5, -0.5), Vector3D::new(1., 1., 0.)),
         ),
-        vec![
-            Box::new(Sphere::new(
-                Vector3D::new(0.1, 0., -1.1),
-                0.1,
-                Material::new(Color::red(), 100.),
-            )),
-            Box::new(Sphere::new(
-                Vector3D::new(0., 0., -1.2),
-                0.1,
-                Material::new(Color::blue(), 100.),
-            )),
-        ],
-        vec![DotLight::new(Vector3D::new(6., 4., 3.), Color::green(), 0.3)],
+        vec![Box::new(Cone::new(
+            Vector3D::new(0., -0.5, -1.),
+            Vector3D::new(-1., 1., -2.),
+            0.5,
+            0.5,
+            Material::new(Color::green(), 100.),
+        ))],
+        vec![DotLight::new(
+            Vector3D::new(6., 4., 3.),
+            Color::green(),
+            0.3,
+        )],
     );
     for y in 0..RESOLUTION_HEIGHT {
         let v = y as f64 * (1. / RESOLUTION_HEIGHT as f64);

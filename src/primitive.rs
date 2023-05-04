@@ -1,5 +1,7 @@
 mod sphere;
 pub use sphere::Sphere;
+mod cone;
+pub use cone::Cone;
 
 use crate::{material::Material, math::Vector3D, ray::Ray};
 
