@@ -1,0 +1,79 @@
+{
+    "color": {
+        "r": 150,
+        "g": 150,
+        "b": 150
+    },
+    "camera": {
+        "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+        },
+        "viewport": {
+            "position": {
+                "x": -0.5,
+                "y": -0.5,
+                "z": -0.5
+            },
+            "size": {
+                "x": 1,
+                "y": 1,
+                "z": 0
+            }
+        }
+    },
+    "primitive": [
+        {
+            "type": "sphere",
+            "position": {
+                "x": 0.1,
+                "y": 0,
+                "z": -1.1
+            },
+            "radius": 0.1,
+            "material": {
+                "color": {
+                    "r": 255,
+                    "g": 0,
+                    "b": 0
+                },
+                "transparency": 100
+            }
+        },
+        {
+            "type": "sphere",
+            "position": {
+                "x": 0,
+                "y": 0,
+                "z": -1.2
+            },
+            "radius": 0.1,
+            "material": {
+                "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 255
+                },
+                "transparency": 100
+            }
+        },
+        {
+            "type": "sphere",
+            "position": {
+                "x": 0,
+                "y": -0.3,
+                "z": -1.2
+            },
+            "radius": 0.4,
+            "material": {
+                "color": {
+                    "r": 0,
+                    "g": 255,
+                    "b": 255
+                },
+                "transparency": 100
+            }
+        }
+    ]
+}

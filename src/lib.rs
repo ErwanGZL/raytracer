@@ -6,42 +6,43 @@ mod math;
 mod primitive;
 mod ray;
 mod scene;
+mod shape;
 
 use camera::Camera;
 use material::{Color, Material};
 use math::Rectangle3D;
 use math::Vector3D;
+use primitive::Primitive;
 use primitive::Sphere;
 use scene::Scene;
+use serde::{Deserialize, Serialize};
 use std::fs::File;
+use std::io::Read;
 use std::io::Write;
 
-pub fn render_image() {
+use crate::shape::from_json_prim;
+
+pub fn render_image(filename: &str) {
+    let mut file = File::open(filename).unwrap();
+    let mut buff = String::new();
+    file.read_to_string(&mut buff).unwrap();
+
+    let data: serde_json::Value = serde_json::from_str(&buff).unwrap();
+
+    let bg_color = Color::from_json(&data["color"]);
+    let camera = Camera::from_json(&data["camera"]);
+    let mut primitives = Vec::new();
+    for primitive_data in data["primitive"].as_array().unwrap() {
+        let primitive: Box<dyn Primitive> = from_json_prim(primitive_data);
+        primitives.push(primitive);
+    }
+
     let mut out = File::create("out.ppm").expect("create");
     const RESOLUTION_WIDTH: i32 = 500;
     const RESOLUTION_HEIGHT: i32 = 500;
 
     writeln!(out, "P3\n{} {}\n255", RESOLUTION_WIDTH, RESOLUTION_HEIGHT).expect("writeln");
-
-    let scene = Scene::new(
-        Color::white(),
-        Camera::new(
-            Vector3D::default(),
-            Rectangle3D::new(Vector3D::new(-0.5, -0.5, -0.5), Vector3D::new(1., 1., 0.)),
-        ),
-        vec![
-            Box::new(Sphere::new(
-                Vector3D::new(0.1, 0., -1.1),
-                0.1,
-                Material::new(Color::red(), 100.),
-            )),
-            Box::new(Sphere::new(
-                Vector3D::new(0., 0., -1.2),
-                0.1,
-                Material::new(Color::blue(), 100.),
-            )),
-        ],
-    );
+    let scene = Scene::new(bg_color, camera, primitives);
     for y in 0..RESOLUTION_HEIGHT {
         let v = y as f64 * (1. / RESOLUTION_HEIGHT as f64);
         for x in 0..RESOLUTION_WIDTH {

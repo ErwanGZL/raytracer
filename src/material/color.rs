@@ -1,7 +1,10 @@
+use serde_json::Value;
 use std::fs::File;
 use std::io::Write;
 
-#[derive(Debug, Clone, Copy)]
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub struct Color {
     r: u8,
     g: u8,
@@ -9,6 +12,13 @@ pub struct Color {
 }
 
 impl Color {
+    pub fn from_json(data: &Value) -> Color {
+        let r = data["r"].as_u64().unwrap() as u8;
+        let g = data["g"].as_u64().unwrap() as u8;
+        let b = data["b"].as_u64().unwrap() as u8;
+        Color::new(r, g, b)
+    }
+
     pub fn new(r: u8, g: u8, b: u8) -> Self {
         Color { r, g, b }
     }

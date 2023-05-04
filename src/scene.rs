@@ -1,4 +1,10 @@
+use super::Vector3D;
+use crate::primitive::Sphere;
 use crate::{camera::Camera, material::Color, primitive::Primitive};
+use crate::{material::Material, ray::Ray};
+
+use serde::{Deserialize, Serialize};
+use serde_json::Value;
 
 pub struct Scene {
     bg_color: Color,

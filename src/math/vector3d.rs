@@ -1,4 +1,8 @@
-#[derive(Debug, Clone, Copy)]
+use serde::{Deserialize, Serialize};
+use serde_json::Value;
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+
 pub struct Vector3D {
     x: f64,
     y: f64,
@@ -41,6 +45,13 @@ impl Vector3D {
     pub fn distance(&self, other: Self) -> f64 {
         ((other.x - self.x).powi(2) + (other.y - self.y).powi(2) + (other.z - self.z).powi(2))
             .sqrt()
+    }
+
+    pub fn from_json(data: &Value) -> Vector3D {
+        let x = data["x"].as_f64().unwrap();
+        let y = data["y"].as_f64().unwrap();
+        let z = data["z"].as_f64().unwrap();
+        Vector3D::new(x, y, z)
     }
 }
 
