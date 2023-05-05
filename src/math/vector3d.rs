@@ -120,3 +120,15 @@ impl std::ops::Div for Vector3D {
         }
     }
 }
+
+impl std::ops::Div<f64> for Vector3D {
+    type Output = Self;
+
+    fn div(self, rhs: f64) -> Self {
+        Self {
+            x: self.x / rhs,
+            y: self.y / rhs,
+            z: self.z / rhs,
+        }
+    }
+}
