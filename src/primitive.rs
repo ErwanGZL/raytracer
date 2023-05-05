@@ -1,6 +1,7 @@
 mod sphere;
+mod plane;
 pub use sphere::Sphere;
-
+pub use plane::Plane;
 use crate::{material::Material, math::Vector3D, ray::Ray};
 
 pub trait Primitive {

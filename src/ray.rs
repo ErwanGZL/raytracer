@@ -28,11 +28,11 @@ impl Ray {
             direction: (target - origin).normalize(),
         }
     }
-    pub fn origin(&self) -> &Vector3D {
-        &self.origin
+    pub fn origin(&self) -> Vector3D {
+        self.origin
     }
-    pub fn direction(&self) -> &Vector3D {
-        &self.direction
+    pub fn direction(&self) -> Vector3D {
+        self.direction
     }
     pub fn intersect<'a>(&self, primitive: &'a Vec<Box<dyn Primitive>>) -> Option<Intersection<'a>> {
         let mut v: Vec<Intersection<'a>> = Vec::new();
