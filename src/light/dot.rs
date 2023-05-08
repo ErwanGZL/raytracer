@@ -1,15 +1,15 @@
 use crate::{material::Color, math::Vector3D};
 
 #[derive(Debug, Clone, Copy)]
-pub struct DotLight {
+pub struct Dot {
     pub position: Vector3D,
     pub color: Color,
     pub intensity: f32,
 }
 
-impl DotLight {
+impl Dot {
     pub fn new(position: Vector3D, color: Color, intensity: f32) -> Self {
-        DotLight {
+        Dot {
             position,
             color,
             intensity,

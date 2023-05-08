@@ -1,35 +1,75 @@
-use crate::{camera::Camera, material::Color, primitive::Primitive, dot_light::DotLight};
+use crate::{
+    camera::{Camera, Image},
+    light,
+    material::Color,
+    math::Vector3D,
+    primitive::{Intersection, Primitive},
+};
 
 pub struct Scene {
     bg_color: Color,
+    ambiant_light: light::Ambiant,
     camera: Camera,
     primitives: Vec<Box<dyn Primitive>>,
-    lights: Vec<DotLight>,
+    lights: Vec<light::Dot>,
 }
 
 impl Scene {
-    pub fn new(bg_color: Color, camera: Camera, primitives: Vec<Box<dyn Primitive>>, lights: Vec<DotLight>) -> Self {
+    pub fn new(
+        bg_color: Color,
+        ambiant_light: light::Ambiant,
+        camera: Camera,
+        primitives: Vec<Box<dyn Primitive>>,
+        lights: Vec<light::Dot>,
+    ) -> Self {
         Scene {
             bg_color,
+            ambiant_light,
             camera,
             primitives,
             lights,
         }
     }
-
     pub fn camera(&self) -> &Camera {
         &self.camera
     }
+}
 
-    pub fn bg_color(&self) -> Color {
-        self.bg_color
+impl Scene {
+    pub fn bake(&mut self) {
+        let image_height = self.camera.image().height();
+        let image_width = self.camera.image().width();
+        for y in (0..image_height).rev() {
+            let v: f64 = y as f64 / (image_height - 1) as f64;
+            for x in 0..image_width {
+                let u: f64 = x as f64 / (image_width - 1) as f64;
+                let ray = self.camera.at(u, v);
+                let intersection = ray.intersect(&self.primitives);
+                let color = self.lighting(intersection);
+                self.camera.image_as_mut().write(&color);
+            }
+        }
     }
 
-    pub fn primitives(&self) -> &Vec<Box<dyn Primitive>> {
-        &self.primitives
+    fn lighting(&self, i: Option<Intersection>) -> Color {
+        match i {
+            Some(i) => {
+                let mut color = self.ambiant(&i);
+                // color = color + self.diffuse(&i);
+                // color = color + self.specular(&i);
+                color
+            }
+            None => self.bg_color,
+        }
     }
 
-    pub fn lights(&self) -> &Vec<DotLight> {
-        &self.lights
+    fn ambiant(&self, i: &Intersection) -> Color {
+        i.material().color() * self.ambiant_light.color() * self.ambiant_light.intensity() as f64
+    }
+    fn diffuse(&self, _i: &Intersection) -> Color {
+        todo!()
+    }
+    fn specular(&self, _i: &Intersection) -> Color {
+        todo!()
     }
 }
