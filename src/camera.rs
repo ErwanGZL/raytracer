@@ -18,12 +18,13 @@ pub struct Camera {
 
 impl Camera {
     pub fn new(eye: Vector3D, image: Image, focal_length: f64) -> Self {
-        let viewport_width = image.width() as f64;
-        let viewport_height = image.height() as f64;
-        let horizontal = Vector3D::new(viewport_width, 0., 0.);
-        let vertical = Vector3D::new(0., viewport_height, 0.);
-        let lower_left_corner = eye - horizontal / 2.0 - vertical / 2.0 - Vector3D::new(0.0, 0.0, focal_length);
-        let screen = Rectangle3D::new(lower_left_corner, horizontal + vertical);
+        let viewport_height = 2.0;
+        let viewport_width = viewport_height * image.aspect_ratio();
+
+        let lower_left_corner = eye - Vector3D::new(viewport_width / 2.0, viewport_height / 2.0, focal_length);
+        let dimensions = eye + Vector3D::new(viewport_width, viewport_height, 0.0);
+
+        let screen = Rectangle3D::new(lower_left_corner, dimensions);
         Self {
             eye,
             screen,
@@ -37,8 +38,7 @@ impl Camera {
         self.eye
     }
     pub fn at(&self, u: f64, v: f64) -> Ray {
-        let p = self.screen.point_at(u, v);
-        Ray::new(self.eye, Vector3D::new(p.x(), p.y(), p.z()))
+        Ray::new(self.eye, self.screen.point_at(u, v))
     }
     pub fn write(&mut self, color: Color) {
         self.image.write(&color);

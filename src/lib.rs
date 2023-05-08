@@ -13,35 +13,30 @@ use camera::Image;
 use material::{Color, Material};
 use math::Rectangle3D;
 use math::Vector3D;
+use primitive::Plane;
 use primitive::Primitive;
 use primitive::Sphere;
 use ray::Ray;
 use scene::Scene;
 
-const IMAGE_HEIGHT: i32 = 720;
-const IMAGE_WIDTH: i32 = 1280;
+const IMAGE_HEIGHT: i32 = 480;
 
-const AMBIANT_COEFFICIENT: f32 = 1.0;
+const AMBIANT_COEFFICIENT: f32 = 0.7;
 
 pub fn render_image() {
-    Scene::new(
-        Color::blue(),
+    let mut scene = Scene::new(
+        Color::black(),
         light::Ambiant::new(Color::white(), AMBIANT_COEFFICIENT),
         Camera::new(
-            Vector3D::default(),
-            Image::new(IMAGE_WIDTH, IMAGE_HEIGHT, "out.ppm"),
+            Vector3D::new(0., 0., 0.),
+            Image::new(IMAGE_HEIGHT * 3/2, IMAGE_HEIGHT, "out.ppm"),
             1.0,
         ),
         vec![
             Box::new(Sphere::new(
-                Vector3D::new(0.1, 0., -1.1),
-                0.1,
-                Material::new(Color::red(), 100.),
-            )),
-            Box::new(Sphere::new(
-                Vector3D::new(0., 0., -1.2),
-                0.1,
-                Material::new(Color::blue(), 100.),
+                Vector3D::new(0., 0., -3.),
+                0.5,
+                Material::new(Color::red(), 1.),
             )),
         ],
         vec![light::Dot::new(
@@ -49,5 +44,7 @@ pub fn render_image() {
             Color::green(),
             0.3,
         )],
-    ).bake();
+    );
+    println!("{:#?}", scene.camera());
+    scene.bake();
 }

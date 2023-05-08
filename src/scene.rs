@@ -30,16 +30,19 @@ impl Scene {
             lights,
         }
     }
+    pub fn camera(&self) -> &Camera {
+        &self.camera
+    }
 }
 
 impl Scene {
     pub fn bake(&mut self) {
         let image_height = self.camera.image().height();
         let image_width = self.camera.image().width();
-        for y in 0..image_height {
-            let v: f64 = (y / (image_height - 1)) as f64;
+        for y in (0..image_height).rev() {
+            let v: f64 = y as f64 / (image_height - 1) as f64;
             for x in 0..image_width {
-                let u: f64 = (x / (image_width - 1)) as f64;
+                let u: f64 = x as f64 / (image_width - 1) as f64;
                 let ray = self.camera.at(u, v);
                 let intersection = ray.intersect(&self.primitives);
                 let color = self.lighting(intersection);
@@ -52,8 +55,8 @@ impl Scene {
         match i {
             Some(i) => {
                 let mut color = self.ambiant(&i);
-                color = color + self.diffuse(&i);
-                color = color + self.specular(&i);
+                // color = color + self.diffuse(&i);
+                // color = color + self.specular(&i);
                 color
             }
             None => self.bg_color,
@@ -63,10 +66,10 @@ impl Scene {
     fn ambiant(&self, i: &Intersection) -> Color {
         i.material().color() * self.ambiant_light.color() * self.ambiant_light.intensity() as f64
     }
-    fn diffuse(&self, i: &Intersection) -> Color {
-        Color::new(0, 0, 0)
+    fn diffuse(&self, _i: &Intersection) -> Color {
+        todo!()
     }
-    fn specular(&self, i: &Intersection) -> Color {
-        Color::new(0, 0, 0)
+    fn specular(&self, _i: &Intersection) -> Color {
+        todo!()
     }
 }
