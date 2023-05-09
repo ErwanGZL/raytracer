@@ -2,52 +2,46 @@ mod image;
 pub use image::Image;
 
 use crate::{
-    math::{Rectangle3D, Vector3D},
-    ray::Ray, material::Color,
+    material::Color,
+    math::Vector3D,
+    ray::Ray,
 };
 
 #[derive(Debug)]
 pub struct Camera {
     eye: Vector3D,
-    screen: Rectangle3D,
-    focal_length: f64,
+    direction: Vector3D,
+    fov: f64,
     image: Image,
-    viewport_width: f64,
-    viewport_height: f64,
 }
 
 impl Camera {
-    pub fn new(eye: Vector3D, image: Image, focal_length: f64) -> Self {
-        let viewport_height = 2.0;
-        let viewport_width = viewport_height * image.aspect_ratio();
-
-        let lower_left_corner = eye - Vector3D::new(viewport_width / 2.0, viewport_height / 2.0, focal_length);
-        let dimensions = eye + Vector3D::new(viewport_width, viewport_height, 0.0);
-
-        let screen = Rectangle3D::new(lower_left_corner, dimensions);
-        Self {
+    pub fn new(eye: Vector3D, direction: Vector3D, fov: f64, image: Image) -> Self {
+        let direction = direction.normalize();
+        Camera {
             eye,
-            screen,
-            focal_length,
+            direction,
+            fov,
             image,
-            viewport_width,
-            viewport_height,
         }
     }
     pub fn eye(&self) -> Vector3D {
         self.eye
     }
-    pub fn at(&self, u: f64, v: f64) -> Ray {
-        Ray::new(self.eye, self.screen.point_at(u, v))
+    pub fn at(&self, x: f64, y: f64) -> Ray {
+        let half_height = (self.fov / 2.).tan();
+        let half_width = self.image.aspect_ratio() * half_height;
+
+        let right = self.direction.cross(Vector3D::new(0., 1., 0.)).normalize();
+        let up = self.direction.cross(right).normalize();
+
+        let x_dir = right * (2. * x - 1.0) * half_width;
+        let y_dir = up * (2. * y - 1.0) * half_height;
+
+        Ray::new(self.eye, (self.direction + x_dir + y_dir).normalize())
     }
     pub fn write(&mut self, color: Color) {
         self.image.write(&color);
-    }
-    pub fn viewport_height(&self) -> f64 {
-        self.viewport_height
-    }
-    pub fn viewport_width(&self) -> f64 {
-        self.viewport_width
     }
     pub fn image(&self) -> &Image {
         &self.image
