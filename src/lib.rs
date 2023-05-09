@@ -11,7 +11,6 @@ mod scene;
 use camera::Camera;
 use camera::Image;
 use material::{Color, Material};
-use math::Rectangle3D;
 use math::Vector3D;
 use primitive::Plane;
 use primitive::Primitive;
@@ -29,12 +28,13 @@ pub fn render_image() {
         light::Ambiant::new(Color::white(), AMBIANT_COEFFICIENT),
         Camera::new(
             Vector3D::new(0., 0., 0.),
+            Vector3D::new(0., 0., -1.),
+            50.0,
             Image::new(IMAGE_HEIGHT * 3/2, IMAGE_HEIGHT, "out.ppm"),
-            1.0,
         ),
         vec![
             Box::new(Sphere::new(
-                Vector3D::new(0., 0., -3.),
+                Vector3D::new(0., 2., -3.),
                 0.5,
                 Material::new(Color::red(), 1.),
             )),
