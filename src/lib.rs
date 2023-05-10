@@ -27,17 +27,27 @@ pub fn render_image() {
         Color::black(),
         light::Ambiant::new(Color::white(), AMBIANT_COEFFICIENT),
         Camera::new(
-            Vector3D::new(0., 0., 0.),
-            Vector3D::new(0., 0., -1.),
-            50.0,
+            Vector3D::new(0., 20., -100.),
+            Vector3D::new(0., 0., 1.),
+            72.0,
             Image::new(IMAGE_HEIGHT * 3/2, IMAGE_HEIGHT, "out.ppm"),
         ),
         vec![
             Box::new(Sphere::new(
-                Vector3D::new(0., 2., -3.),
-                0.5,
-                Material::new(Color::red(), 1.),
+                Vector3D::new(60., 40., 5.),
+                25.,
+                Material::new(Color::red(), 100.),
             )),
+            Box::new(Sphere::new(
+                Vector3D::new(-40., -10., 20.),
+                35.,
+                Material::new(Color::green(), 100.),
+            )),
+            Box::new(Plane::new(
+                Vector3D::new(0., -20., 0.),
+                Vector3D::new(0., 1., 0.),
+                Material::new(Color::blue(), 1.)
+            ))
         ],
         vec![light::Dot::new(
             Vector3D::new(6., 4., 3.),

@@ -18,6 +18,7 @@ pub struct Camera {
 impl Camera {
     pub fn new(eye: Vector3D, direction: Vector3D, fov: f64, image: Image) -> Self {
         let direction = direction.normalize();
+        let fov = fov.to_radians();
         Camera {
             eye,
             direction,
