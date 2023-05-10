@@ -39,9 +39,9 @@ impl Scene {
     pub fn bake(&mut self) {
         let image_height = self.camera.image().height();
         let image_width = self.camera.image().width();
-        for y in (0..image_height).rev() {
+        for y in 0..image_height {
             let v: f64 = y as f64 / (image_height - 1) as f64;
-            for x in 0..image_width {
+            for x in (0..image_width).rev() {
                 let u: f64 = x as f64 / (image_width - 1) as f64;
                 let ray = self.camera.at(u, v);
                 let intersection = ray.intersect(&self.primitives);
