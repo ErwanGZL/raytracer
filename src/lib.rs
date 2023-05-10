@@ -20,7 +20,7 @@ use scene::Scene;
 
 const IMAGE_HEIGHT: i32 = 480;
 
-const AMBIANT_COEFFICIENT: f32 = 0.7;
+const AMBIANT_COEFFICIENT: f32 = 0.4;
 
 pub fn render_image() {
     let mut scene = Scene::new(
@@ -50,9 +50,9 @@ pub fn render_image() {
             ))
         ],
         vec![light::Dot::new(
-            Vector3D::new(6., 4., 3.),
-            Color::green(),
-            0.3,
+            Vector3D::new(400., 500., 100.),
+            Color::white(),
+            0.6,
         )],
     );
     println!("{:#?}", scene.camera());
