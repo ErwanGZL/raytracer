@@ -29,4 +29,7 @@ impl<'a> Intersection<'a> {
     pub fn material(&self) -> Material {
         self.primitive.material()
     }
+    pub fn normal(&self) -> Vector3D {
+        self.primitive.normal(self.point).normalize()
+    }
 }

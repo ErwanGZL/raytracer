@@ -59,6 +59,10 @@ impl Vector3D {
             z: self.x * other.y - self.y * other.x,
         }
     }
+
+    pub fn direction_to(&self, other: Self) -> Self {
+        (other - *self).normalize()
+    }
 }
 
 impl std::ops::Add for Vector3D {
