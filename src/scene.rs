@@ -1,9 +1,10 @@
 use crate::{
     camera::{Camera, Image},
-    light,
+    light::{self, Dot},
     material::Color,
     math::Vector3D,
     primitive::{Intersection, Primitive},
+    ray::Ray,
 };
 
 pub struct Scene {
@@ -54,9 +55,22 @@ impl Scene {
     fn lighting(&self, i: Option<Intersection>) -> Color {
         match i {
             Some(i) => {
+                let i = Intersection::new(i.point() + i.normal(), i.primitive());
                 let mut color = self.ambiant(&i);
-                // color = color + self.diffuse(&i);
-                // color = color + self.specular(&i);
+                for l in &self.lights {
+                    let ray = Ray::new(i.point(), i.point().direction_to(l.position()));
+                    let mut is_shadow: bool = false;
+                    for p in &self.primitives {
+                        if p.hits(&ray).len() != 0 {
+                            is_shadow = true;
+                            break;
+                        }
+                    }
+                    if !is_shadow {
+                        color = color + self.diffuse(&i, &l);
+                        // color = color + self.specular(&i);
+                    }
+                }
                 color
             }
             None => self.bg_color,
@@ -66,8 +80,12 @@ impl Scene {
     fn ambiant(&self, i: &Intersection) -> Color {
         i.material().color() * self.ambiant_light.color() * self.ambiant_light.intensity() as f64
     }
-    fn diffuse(&self, _i: &Intersection) -> Color {
-        todo!()
+    fn diffuse(&self, i: &Intersection, l: &Dot) -> Color {
+        let cos_theta = i
+            .normal()
+            .dot(i.point().direction_to(l.position()))
+            .max(0.0);
+        l.color() * l.intensity() as f64 * cos_theta
     }
     fn specular(&self, _i: &Intersection) -> Color {
         todo!()
