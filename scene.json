@@ -1,79 +1,106 @@
 {
     "color": {
-        "r": 150,
-        "g": 150,
-        "b": 150
+        "r": 0,
+        "g": 0,
+        "b": 0
+    },
+    "ambient_light": {
+        "color": {
+            "r": 255,
+            "g": 255,
+            "b": 255
+        },
+        "coefficient": 0.4
     },
     "camera": {
         "position": {
             "x": 0,
-            "y": 0,
-            "z": 0
+            "y": 20,
+            "z": -100
         },
-        "viewport": {
-            "position": {
-                "x": -0.5,
-                "y": -0.5,
-                "z": -0.5
-            },
-            "size": {
-                "x": 1,
-                "y": 1,
-                "z": 0
-            }
+        "direction": {
+            "x": 0,
+            "y": 0,
+            "z": 1
+        },
+        "fov": 72,
+        "image": {
+            "width": 720,
+            "height": 480,
+            "output_file": "out.ppm"
         }
     },
-    "primitive": [
+    "objects": [
         {
             "type": "sphere",
             "position": {
-                "x": 0.1,
-                "y": 0,
-                "z": -1.1
+                "x": 60,
+                "y": 40,
+                "z": 5
             },
-            "radius": 0.1,
+            "radius": 25,
             "material": {
                 "color": {
                     "r": 255,
                     "g": 0,
                     "b": 0
                 },
-                "transparency": 100
+                "specular_coefficient": 100
             }
         },
         {
             "type": "sphere",
             "position": {
-                "x": 0,
-                "y": 0,
-                "z": -1.2
+                "x": -40,
+                "y": -10,
+                "z": 20
             },
-            "radius": 0.1,
-            "material": {
-                "color": {
-                    "r": 0,
-                    "g": 0,
-                    "b": 255
-                },
-                "transparency": 100
-            }
-        },
-        {
-            "type": "sphere",
-            "position": {
-                "x": 0,
-                "y": -0.3,
-                "z": -1.2
-            },
-            "radius": 0.4,
+            "radius": 35,
             "material": {
                 "color": {
                     "r": 0,
                     "g": 255,
-                    "b": 255
+                    "b": 0
                 },
-                "transparency": 100
+                "specular_coefficient": 100
             }
+        },
+        {
+            "type": "plane",
+            "position": {
+                "x": 0,
+                "y": -20,
+                "z": 0
+            },
+            "normal": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "material": {
+                "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 1
+                },
+                "specular_coefficient": 1
+            }
+        }
+    ],
+    "lights": [
+        {
+            "type": "point",
+            "position": {
+                "x": 400,
+                "y": 500,
+                "z": 100
+            },
+            "color": {
+                "r": 255,
+                "g": 255,
+                "b": 255
+            },
+            "intensity": 0.6
         }
     ]
 }

@@ -1,6 +1,7 @@
 use serde_json::Value;
 use std::fs::File;
 use std::io::Write;
+use std::ops::{Add, Mul};
 
 use serde::{Deserialize, Serialize};
 
@@ -83,5 +84,45 @@ impl Color {
     }
     pub fn write(&self, target: &mut File) {
         writeln!(target, "{} {} {}", self.r, self.g, self.b).expect("write")
+    }
+    pub fn blend(&self, other: Self, weight: f32) -> Self {
+        let weight = weight.clamp(0.0, 1.0);
+        let r = (self.r as f32 * (1. - weight) + other.r as f32 * weight) as u8;
+        let g = (self.g as f32 * (1. - weight) + other.g as f32 * weight) as u8;
+        let b = (self.b as f32 * (1. - weight) + other.b as f32 * weight) as u8;
+        Color { r, g, b }
+    }
+}
+
+impl Mul<Color> for Color {
+    type Output = Self;
+    fn mul(self, rhs: Self) -> Self::Output {
+        Color {
+            r: ((self.r as u16 * rhs.r as u16) / 255) as u8,
+            g: ((self.g as u16 * rhs.g as u16) / 255) as u8,
+            b: ((self.b as u16 * rhs.b as u16) / 255) as u8,
+        }
+    }
+}
+
+impl Mul<f64> for Color {
+    type Output = Self;
+    fn mul(self, rhs: f64) -> Self::Output {
+        Color {
+            r: (self.r as f64 * rhs) as u8,
+            g: (self.g as f64 * rhs) as u8,
+            b: (self.b as f64 * rhs) as u8,
+        }
+    }
+}
+
+impl Add<Color> for Color {
+    type Output = Self;
+    fn add(self, rhs: Self) -> Self::Output {
+        Color {
+            r: self.r.saturating_add(rhs.r),
+            g: self.g.saturating_add(rhs.g),
+            b: self.b.saturating_add(rhs.b),
+        }
     }
 }

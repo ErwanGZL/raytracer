@@ -18,13 +18,13 @@ impl Material {
             transparency,
         }
     }
-    pub fn color(&self) -> &Color {
-        &self.color
+    pub fn color(&self) -> Color {
+        self.color
     }
 
     pub fn from_json(data: &Value) -> Material {
         let color = Color::from_json(&data["color"]);
-        let transparency = data["transparency"].as_f64().unwrap();
+        let transparency = data["specular_coefficient"].as_f64().unwrap();
         return Material::new(color, transparency);
     }
 }
