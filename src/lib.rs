@@ -30,7 +30,7 @@ pub fn render_image() {
             Vector3D::new(0., 20., -100.),
             Vector3D::new(0., 0., 1.),
             72.0,
-            Image::new(IMAGE_HEIGHT * 3/2, IMAGE_HEIGHT, "out.ppm"),
+            Image::new(IMAGE_HEIGHT * 3 / 2, IMAGE_HEIGHT, "out.ppm"),
         ),
         vec![
             Box::new(Sphere::new(
@@ -46,14 +46,18 @@ pub fn render_image() {
             Box::new(Plane::new(
                 Vector3D::new(0., -20., 0.),
                 Vector3D::new(0., 1., 0.),
-                Material::new(Color::blue(), 1.)
-            ))
+                Material::new(Color::blue(), 1.),
+            )),
         ],
-        vec![light::Dot::new(
-            Vector3D::new(400., 500., 100.),
-            Color::white(),
-            0.6,
-        )],
+        vec![
+            Box::new(light::Dot::new(Vector3D::new(400., 500., 100.), Color::white(), 0.6)),
+            // Box::new(light::Dot::new(Vector3D::new(0., 500., 50.), Color::yellow(), 0.2)),
+            Box::new(light::Directional::new(
+                Color::white(),
+                0.2,
+                Vector3D::new(1., -1., 0.),
+            )),
+        ],
     );
     println!("{:#?}", scene.camera());
     scene.bake();
