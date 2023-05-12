@@ -1,6 +1,10 @@
-use super::Vector3D;
+// useless file ?
 
-#[derive(Debug)]
+use super::Vector3D;
+use serde::{Deserialize, Serialize};
+use serde_json::Value;
+
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Rectangle3D {
     origin: Vector3D, // bottom-left corner
     dimensions: Vector3D,
@@ -16,5 +20,11 @@ impl Rectangle3D {
             self.origin.y() + self.dimensions.y() * v,
             self.origin.z(),
         )
+    }
+
+    pub fn from_json(data: &Value) -> Rectangle3D {
+        let origin = Vector3D::from_json(&data["position"]);
+        let dimensions = Vector3D::from_json(&data["size"]);
+        Rectangle3D::new(origin, dimensions)
     }
 }

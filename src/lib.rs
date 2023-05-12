@@ -1,115 +1,62 @@
 #![cfg_attr(debug_assertions, allow(dead_code, unused_imports))]
 
 mod camera;
-mod dot_light;
+mod light;
 mod material;
 mod math;
 mod primitive;
 mod ray;
 mod scene;
+mod shape;
 
 use camera::Camera;
-use dot_light::DotLight;
+use camera::Image;
 use material::{Color, Material};
-use math::Rectangle3D;
 use math::Vector3D;
 use primitive::Cone;
+use primitive::Plane;
 use primitive::Primitive;
 use primitive::Sphere;
 use ray::Ray;
 use scene::Scene;
+use serde::{Deserialize, Serialize};
 use std::fs::File;
+use std::io::Read;
 use std::io::Write;
 
-const RESOLUTION_WIDTH: i32 = 500;
-const RESOLUTION_HEIGHT: i32 = 500;
-const AMBIANT_COEFFICIENT: f64 = 0.1;
+use crate::light::Light;
+use crate::shape::from_json_light;
+use crate::shape::from_json_prim;
 
-pub fn render_image() {
-    let mut out = File::create("out.ppm").expect("create");
+const IMAGE_HEIGHT: i32 = 480;
 
-    writeln!(out, "P3\n{} {}\n255", RESOLUTION_WIDTH, RESOLUTION_HEIGHT).expect("writeln");
+const AMBIANT_COEFFICIENT: f32 = 0.4;
 
-    let scene = Scene::new(
-        Color::black(),
-        Camera::new(
-            Vector3D::default(),
-            Rectangle3D::new(Vector3D::new(-0.5, -0.5, -0.5), Vector3D::new(1., 1., 0.)),
-        ),
-        vec![Box::new(Cone::new(
-            Vector3D::new(0., -0.5, -1.),
-            Vector3D::new(-1., 1., -2.),
-            0.5,
-            0.5,
-            Material::new(Color::green(), 100.),
-        ))],
-        vec![DotLight::new(
-            Vector3D::new(6., 4., 3.),
-            Color::green(),
-            0.3,
-        )],
-    );
-    for y in 0..RESOLUTION_HEIGHT {
-        let v = y as f64 * (1. / RESOLUTION_HEIGHT as f64);
-        for x in 0..RESOLUTION_WIDTH {
-            let u = x as f64 * (1. / RESOLUTION_WIDTH as f64);
-            casting(&scene, &mut out, u, v)
-        }
+pub fn render_image(filename: &str) {
+    let mut file = File::open(filename).unwrap();
+    let mut buff = String::new();
+    file.read_to_string(&mut buff).unwrap();
+
+    let data: serde_json::Value = serde_json::from_str(&buff).unwrap();
+
+    let bg_color = Color::from_json(&data["color"]);
+    let ambient_light = light::Ambiant::from_json(&data["ambient_light"]);
+    let camera = Camera::from_json(&data["camera"]);
+
+    let mut lights = Vec::new();
+    for lights_data in data["lights"].as_array().unwrap() {
+        let light: Box<dyn Light> = from_json_light(lights_data);
+        lights.push(light);
     }
-}
 
-fn get_closest_point<'a>(
-    camera: &Camera,
-    v: &Vec<(Vector3D, &'a dyn Primitive)>,
-) -> Option<(Vector3D, &'a dyn Primitive)> {
-    match v
-        .iter()
-        .map(|&x| (x.0.distance(camera.origin()), x))
-        .min_by(|x, y| x.0.total_cmp(&y.0))
-    {
-        Some((_, point)) => Some(point),
-        None => None,
+    let mut primitives = Vec::new();
+    for primitive_data in data["objects"].as_array().unwrap() {
+        let primitive: Box<dyn Primitive> = from_json_prim(primitive_data);
+        primitives.push(primitive);
     }
-}
 
-fn casting(scene: &Scene, output: &mut File, u: f64, v: f64) {
-    let ray = scene.camera().ray(u, v);
-    let mut v: Vec<(Vector3D, &dyn Primitive)> = Vec::new();
-    for prim in scene.primitives() {
-        v.extend(prim.hits(&ray));
-    }
-    match get_closest_point(scene.camera(), &v) {
-        Some(intersection) => apply_light(scene, output, intersection),
-        None => scene.bg_color().write(output),
-    };
-}
+    let mut scene = Scene::new(bg_color, ambient_light, camera, primitives, lights);
 
-fn apply_light(scene: &Scene, output: &mut File, intersection: (Vector3D, &dyn Primitive)) {
-    let (point, owner) = intersection;
-    let point = point + owner.normal(point);
-    for light in scene.lights() {
-        let ray = Ray::from_points(point, light.position());
-        let mut is_shadow = false;
-        for prim in scene.primitives() {
-            if prim.hits(&ray).len() > 0 {
-                is_shadow = true;
-                break;
-            }
-        }
-        if !is_shadow {
-            blend_light(intersection, light).write(output);
-        } else {
-            Color::black().write(output);
-        }
-    }
-}
-
-fn blend_light(intersection: (Vector3D, &dyn Primitive), light: &DotLight) -> Color {
-    let (point, owner) = intersection;
-    let surface_normal = owner.normal(point);
-    let light_direction = (light.position() - point).normalize();
-    let cos_theta = surface_normal.dot(&light_direction).max(0.0);
-    let light_color = light.color() * light.intensity() as f64 * cos_theta;
-    let ambient_color = owner.material().color() * AMBIANT_COEFFICIENT;
-    ambient_color + light_color
+    println!("{:#?}", scene.camera());
+    scene.bake();
 }

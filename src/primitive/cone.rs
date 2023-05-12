@@ -1,4 +1,4 @@
-use super::Primitive;
+use super::{Intersection, Primitive};
 use crate::Ray;
 use std::f64::consts;
 
@@ -31,6 +31,10 @@ impl Cone {
     }
 }
 
+// fn material(&self) -> Material;
+// fn hits(&self, ray: &Ray) -> Vec<Intersection>;
+// fn normal(&self, point: Vector3D) -> Vector3D;
+
 impl Primitive for Cone {
     fn material(&self) -> Material {
         self.material
@@ -40,11 +44,13 @@ impl Primitive for Cone {
         (point - self.center).normalize()
     }
 
-    fn hits(&self, ray: &Ray) -> Vec<(Vector3D, &dyn Primitive)> {
-        let mut v: Vec<(Vector3D, &dyn Primitive)> = Vec::new();
+    fn hits(&self, ray: &Ray) -> Vec<Intersection> {
+        let mut v: Vec<Intersection> = Vec::new();
 
-        let dir = *ray.direction();
-        let pos = *ray.origin();
+        // let mut v: Vec<(Vector3D, &dyn Primitive)> = Vec::new();
+
+        let dir = ray.direction();
+        let pos = ray.origin();
 
         let _a = pos.x() - self.center.x();
         let _b = pos.z() - self.center.z();
@@ -73,7 +79,7 @@ impl Primitive for Cone {
         let r = pos.y() + t * dir.y();
 
         if (r > self.center.y()) && (r < self.center.y() + self.height) {
-            v.push((
+            v.push(Intersection::new(
                 Vector3D::new(pos.x() + t * dir.x(), r, pos.z() + t * dir.z()),
                 self,
             ));
