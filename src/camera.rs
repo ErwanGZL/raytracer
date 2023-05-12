@@ -1,13 +1,11 @@
 mod image;
 pub use image::Image;
 
-use crate::{
-    material::Color,
-    math::Vector3D,
-    ray::Ray,
-};
+use crate::{material::Color, math::Vector3D, ray::Ray};
+use serde::{Deserialize, Serialize};
+use serde_json::Value;
 
-#[derive(Debug)]
+#[derive(Deserialize, Debug)]
 pub struct Camera {
     eye: Vector3D,
     direction: Vector3D,
@@ -41,13 +39,21 @@ impl Camera {
 
         Ray::new(self.eye, (self.direction + x_dir + y_dir).normalize())
     }
-    pub fn write(&mut self, color: Color) {
-        self.image.write(&color);
-    }
+
     pub fn image(&self) -> &Image {
         &self.image
     }
     pub fn image_as_mut(&mut self) -> &mut Image {
         &mut self.image
+    }
+
+    pub fn from_json(data: &Value) -> Camera {
+        let position = Vector3D::from_json(&data["position"]);
+        let direction = Vector3D::from_json(&data["direction"]);
+        let fov = data["fov"].as_f64().unwrap() as f64;
+
+        let image = Image::from_json(&data["image"]);
+        // Image::new(IMAGE_HEIGHT * 3/2, IMAGE_HEIGHT, "out.ppm"),
+        Camera::new(position, direction, fov, image)
     }
 }

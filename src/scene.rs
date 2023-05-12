@@ -1,11 +1,11 @@
-use crate::{
-    camera::{Camera, Image},
-    light::{self, Dot, Light},
-    material::Color,
-    math::Vector3D,
-    primitive::{Intersection, Primitive},
-    ray::Ray,
-};
+use super::Vector3D;
+use crate::light::{self, Dot, Light};
+use crate::primitive::{Intersection, Sphere};
+use crate::{camera::Camera, material::Color, primitive::Primitive};
+use crate::{material::Material, ray::Ray};
+use serde::{Deserialize, Serialize};
+use serde_json::Value;
+use std::{fs::File, io::Write};
 
 pub struct Scene {
     bg_color: Color,
@@ -38,6 +38,15 @@ impl Scene {
 
 impl Scene {
     pub fn bake(&mut self) {
+        let mut file = File::create(self.camera().image().file_path()).unwrap();
+        writeln!(
+            file,
+            "P3\n{} {}\n255",
+            self.camera().image().width(),
+            self.camera().image().height()
+        )
+        .expect("writeln");
+
         let image_height = self.camera.image().height();
         let image_width = self.camera.image().width();
         for y in 0..image_height {
@@ -47,7 +56,8 @@ impl Scene {
                 let ray = self.camera.at(u, v);
                 let intersection = ray.intersect(&self.primitives);
                 let color = self.lighting(intersection);
-                self.camera.image_as_mut().write(&color);
+                // self.camera.image_as_mut().write(&color);
+                writeln!(file, "{} {} {}", color.r(), color.g(), color.b()).expect("writeln");
             }
         }
     }
@@ -81,10 +91,7 @@ impl Scene {
         i.material().color() * self.ambiant_light.color() * self.ambiant_light.intensity() as f64
     }
     fn diffuse(&self, i: &Intersection, l: &Box<dyn Light>) -> Color {
-        let cos_theta = i
-            .normal()
-            .dot(l.direction_from(i.point()))
-            .max(0.0);
+        let cos_theta = i.normal().dot(l.direction_from(i.point())).max(0.0);
         l.color() * l.intensity() as f64 * cos_theta
     }
     fn specular(&self, _i: &Intersection) -> Color {

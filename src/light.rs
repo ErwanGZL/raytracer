@@ -2,9 +2,10 @@ mod ambiant;
 mod directional;
 mod dot;
 
-pub use dot::Dot;
-pub use directional::Directional;
 pub use ambiant::Ambiant;
+pub use directional::Directional;
+pub use dot::Dot;
+use serde_json::Value;
 
 use crate::{material::Color, math::Vector3D};
 

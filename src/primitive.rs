@@ -1,8 +1,12 @@
 mod sphere;
+use std::error::Error;
+
+use serde_json::Value;
 mod plane;
-pub use sphere::Sphere;
-pub use plane::Plane;
 use crate::{material::Material, math::Vector3D, ray::Ray};
+pub use plane::Plane;
+use serde::{Deserialize, Serialize};
+pub use sphere::Sphere;
 
 pub trait Primitive {
     fn material(&self) -> Material;
