@@ -3,12 +3,8 @@ use crate::light::{self, Dot, Light};
 use crate::primitive::{Intersection, Sphere};
 use crate::{camera::Camera, material::Color, primitive::Primitive};
 use crate::{material::Material, ray::Ray};
-
-use nannou::prelude::cast;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use std::any::Any;
-use std::any::TypeId;
 use std::{fs::File, io::Write};
 
 pub struct Scene {
@@ -72,7 +68,7 @@ impl Scene {
                 let i = Intersection::new(i.point() + i.normal(), i.primitive());
                 let mut color = self.ambiant(&i);
                 for l in &self.lights {
-                    let ray = Ray::new(i.point(), i.point().direction_to(l.position()));
+                    let ray = Ray::new(i.point(), l.direction_from(i.point()));
                     let mut is_shadow: bool = false;
                     for p in &self.primitives {
                         if p.hits(&ray).len() != 0 {
@@ -95,10 +91,7 @@ impl Scene {
         i.material().color() * self.ambiant_light.color() * self.ambiant_light.intensity() as f64
     }
     fn diffuse(&self, i: &Intersection, l: &Box<dyn Light>) -> Color {
-        let cos_theta = i
-            .normal()
-            .dot(i.point().direction_to(l.position()))
-            .max(0.0);
+        let cos_theta = i.normal().dot(l.direction_from(i.point())).max(0.0);
         l.color() * l.intensity() as f64 * cos_theta
     }
     fn specular(&self, _i: &Intersection) -> Color {

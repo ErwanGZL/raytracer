@@ -32,9 +32,10 @@ pub fn from_json_light(data: &Value) -> Box<dyn Light> {
     let color = Color::from_json(&data["color"]);
     let intensity = data["intensity"].as_f64().unwrap() as f32;
 
-    let light_thing = match data["type"].as_str().unwrap() {
-        "point" => light::Dot::new(position, color, intensity),
+    let light_thing: Box<dyn Light> = match data["type"].as_str().unwrap() {
+        "point" => Box::new(light::Dot::new(position, color, intensity)),
+        "directional" => Box::new(light::Directional::new(color, intensity, position)),
         _ => unimplemented!(), // add other lighrs here
     };
-    return Box::new(light_thing);
+    return light_thing;
 }

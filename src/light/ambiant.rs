@@ -27,8 +27,7 @@ impl Light for Ambiant {
     fn intensity(&self) -> f32 {
         self.intensity
     }
-
-    fn position(&self) -> Vector3D {
-        todo!()
+    fn direction_from(&self, _point: Vector3D) -> Vector3D {
+        Vector3D::new(0.0, 0.0, 0.0)
     }
 }

@@ -12,5 +12,5 @@ use crate::{material::Color, math::Vector3D};
 pub trait Light {
     fn color(&self) -> Color;
     fn intensity(&self) -> f32;
-    fn position(&self) -> Vector3D;
+    fn direction_from(&self, point: Vector3D) -> Vector3D;
 }

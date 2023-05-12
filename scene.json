@@ -79,9 +79,9 @@
             },
             "material": {
                 "color": {
-                    "r": 0,
+                    "r": 255,
                     "g": 0,
-                    "b": 1
+                    "b": 0
                 },
                 "specular_coefficient": 1
             }
@@ -101,6 +101,20 @@
                 "b": 255
             },
             "intensity": 0.6
+        },
+        {
+            "type": "directional",
+            "color": {
+                "r": 255,
+                "g": 255,
+                "b": 255
+            },
+            "intensity": 0.2,
+            "position": {
+                "x": 1,
+                "y": -1,
+                "z": 0
+            }
         }
     ]
 }

@@ -32,13 +32,13 @@ impl Dot {
 }
 
 impl Light for Dot {
-    fn position(&self) -> Vector3D {
-        self.position
-    }
     fn color(&self) -> Color {
         self.color
     }
     fn intensity(&self) -> f32 {
         self.intensity
+    }
+    fn direction_from(&self, point: Vector3D) -> Vector3D {
+        (self.position - point).normalize()
     }
 }
