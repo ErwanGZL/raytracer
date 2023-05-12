@@ -1,6 +1,6 @@
 use crate::{
     camera::{Camera, Image},
-    light::{self, Dot},
+    light::{self, Dot, Light},
     material::Color,
     math::Vector3D,
     primitive::{Intersection, Primitive},
@@ -12,7 +12,7 @@ pub struct Scene {
     ambiant_light: light::Ambiant,
     camera: Camera,
     primitives: Vec<Box<dyn Primitive>>,
-    lights: Vec<light::Dot>,
+    lights: Vec<Box<dyn Light>>,
 }
 
 impl Scene {
@@ -21,7 +21,7 @@ impl Scene {
         ambiant_light: light::Ambiant,
         camera: Camera,
         primitives: Vec<Box<dyn Primitive>>,
-        lights: Vec<light::Dot>,
+        lights: Vec<Box<dyn Light>>,
     ) -> Self {
         Scene {
             bg_color,
@@ -58,7 +58,7 @@ impl Scene {
                 let i = Intersection::new(i.point() + i.normal(), i.primitive());
                 let mut color = self.ambiant(&i);
                 for l in &self.lights {
-                    let ray = Ray::new(i.point(), i.point().direction_to(l.position()));
+                    let ray = Ray::new(i.point(), l.direction_from(i.point()));
                     let mut is_shadow: bool = false;
                     for p in &self.primitives {
                         if p.hits(&ray).len() != 0 {
@@ -80,10 +80,10 @@ impl Scene {
     fn ambiant(&self, i: &Intersection) -> Color {
         i.material().color() * self.ambiant_light.color() * self.ambiant_light.intensity() as f64
     }
-    fn diffuse(&self, i: &Intersection, l: &Dot) -> Color {
+    fn diffuse(&self, i: &Intersection, l: &Box<dyn Light>) -> Color {
         let cos_theta = i
             .normal()
-            .dot(i.point().direction_to(l.position()))
+            .dot(l.direction_from(i.point()))
             .max(0.0);
         l.color() * l.intensity() as f64 * cos_theta
     }

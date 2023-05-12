@@ -1,5 +1,7 @@
 use crate::{material::Color, math::Vector3D};
 
+use super::Light;
+
 #[derive(Debug, Clone, Copy)]
 pub struct Dot {
     pub position: Vector3D,
@@ -15,13 +17,16 @@ impl Dot {
             intensity,
         }
     }
-    pub fn position(&self) -> Vector3D {
-        self.position
-    }
-    pub fn color(&self) -> Color {
+}
+
+impl Light for Dot {
+    fn color(&self) -> Color {
         self.color
     }
-    pub fn intensity(&self) -> f32 {
+    fn intensity(&self) -> f32 {
         self.intensity
+    }
+    fn direction_from(&self, point: Vector3D) -> Vector3D {
+        (self.position - point).normalize()
     }
 }
