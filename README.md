@@ -26,7 +26,7 @@ Interface:
 > Once the previous features are working properly, you should add the following ones:
 
 Primitives:
-- [ ] Cylinder
+- [x] Cylinder
 - [x] Cone
 
 Transformation:
@@ -39,7 +39,7 @@ Light:
 > Now that you’ve implemented the very basics of your raytracer, implement freely the following features:
 
 **Primitives: (0.5)**
-- [ ] Limited cylinder (0.5)
+- [x] Limited cylinder (0.5)
 - [x] Limited cone (0.5)
 - [ ] Torus (1)
 - [ ] Tanglecube (1)
