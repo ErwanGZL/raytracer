@@ -1,12 +1,20 @@
+mod circle;
+mod cylinder;
+mod plane;
 mod sphere;
+pub use sphere::Sphere;
+mod cone;
+pub use cone::Cone;
+
+use serde::{Deserialize, Serialize};
+use serde_json::Value;
 use std::error::Error;
 
-use serde_json::Value;
-mod plane;
 use crate::{material::Material, math::Vector3D, ray::Ray};
+
+pub use circle::Circle;
+pub use cylinder::Cylinder;
 pub use plane::Plane;
-use serde::{Deserialize, Serialize};
-pub use sphere::Sphere;
 
 pub trait Primitive {
     fn material(&self) -> Material;

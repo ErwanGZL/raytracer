@@ -13,15 +13,11 @@ use camera::Camera;
 use camera::Image;
 use material::{Color, Material};
 use math::Vector3D;
-use primitive::Plane;
 use primitive::Primitive;
-use primitive::Sphere;
 use ray::Ray;
 use scene::Scene;
-use serde::{Deserialize, Serialize};
 use std::fs::File;
 use std::io::Read;
-use std::io::Write;
 
 use crate::light::Light;
 use crate::shape::from_json_light;

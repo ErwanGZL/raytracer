@@ -10,7 +10,7 @@
             "g": 255,
             "b": 255
         },
-        "coefficient": 0.4
+        "coefficient": 0.7
     },
     "camera": {
         "position": {
@@ -32,40 +32,6 @@
     },
     "objects": [
         {
-            "type": "sphere",
-            "position": {
-                "x": 60,
-                "y": 40,
-                "z": 5
-            },
-            "radius": 25,
-            "material": {
-                "color": {
-                    "r": 255,
-                    "g": 0,
-                    "b": 0
-                },
-                "specular_coefficient": 100
-            }
-        },
-        {
-            "type": "sphere",
-            "position": {
-                "x": -40,
-                "y": -10,
-                "z": 20
-            },
-            "radius": 35,
-            "material": {
-                "color": {
-                    "r": 0,
-                    "g": 255,
-                    "b": 0
-                },
-                "specular_coefficient": 100
-            }
-        },
-        {
             "type": "plane",
             "position": {
                 "x": 0,
@@ -81,6 +47,29 @@
                 "color": {
                     "r": 255,
                     "g": 0,
+                    "b": 0
+                },
+                "specular_coefficient": 1
+            }
+        },
+        {
+            "type": "cone",
+            "position": {
+                "x": 15,
+                "y": 10,
+                "z": -6
+            },
+            "normal": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "height": 24,
+            "radius": 10,
+            "material": {
+                "color": {
+                    "r": 0,
+                    "g": 255,
                     "b": 0
                 },
                 "specular_coefficient": 1
@@ -101,20 +90,6 @@
                 "b": 255
             },
             "intensity": 0.6
-        },
-        {
-            "type": "directional",
-            "color": {
-                "r": 255,
-                "g": 255,
-                "b": 255
-            },
-            "intensity": 0.2,
-            "position": {
-                "x": 1,
-                "y": -1,
-                "z": 0
-            }
         }
     ]
 }

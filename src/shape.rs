@@ -1,7 +1,7 @@
 use crate::light::{self, Light};
 
 use super::Vector3D;
-use crate::primitive::{Plane, Sphere};
+use crate::primitive::{Circle, Cone, Cylinder, Plane, Sphere};
 use crate::{camera::Camera, material::Color, primitive::Primitive};
 use crate::{material::Material, ray::Ray};
 use nannou::draw::properties::spatial::position;
@@ -20,6 +20,24 @@ pub fn from_json_prim(data: &Value) -> Box<dyn Primitive> {
         "plane" => Box::new(Plane::new(
             Vector3D::from_json(&data["position"]),
             Vector3D::from_json(&data["normal"]),
+            material,
+        )),
+        "cylinder" => Box::new(Cylinder::new(
+            Vector3D::from_json(&data["position"]),
+            data["radius"].as_f64().unwrap() as f64,
+            data["height"].as_f64().unwrap() as f64,
+            material,
+        )),
+        "circle" => Box::new(Circle::new(
+            Vector3D::from_json(&data["position"]),
+            data["radius"].as_f64().unwrap() as f64,
+            material,
+        )),
+        "cone" => Box::new(Cone::new(
+            Vector3D::from_json(&data["position"]),
+            Vector3D::from_json(&data["normal"]),
+            data["height"].as_f64().unwrap() as f64,
+            data["radius"].as_f64().unwrap() as f64,
             material,
         )),
         _ => unimplemented!(), // add other shapes here
