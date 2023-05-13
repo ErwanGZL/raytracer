@@ -1,4 +1,4 @@
-use super::{Intersection, Primitive};
+use super::{Circle, Intersection, Primitive};
 use crate::Ray;
 use std::f64::consts;
 
@@ -47,7 +47,13 @@ impl Primitive for Cone {
     fn hits(&self, ray: &Ray) -> Vec<Intersection> {
         let mut v: Vec<Intersection> = Vec::new();
 
-        // let mut v: Vec<(Vector3D, &dyn Primitive)> = Vec::new();
+        // Calculate intersection with the bottom circle
+        let bottom_center = self.center + Vector3D::new(0.0, 0., 0.0);
+        let bottom_circle = Circle::new(bottom_center, self.radius, self.material);
+        let bottom_intersections = bottom_circle.hits(ray);
+        for i in bottom_intersections.iter() {
+            v.push(Intersection::new((*i).point(), self));
+        }
 
         let dir = ray.direction();
         let pos = ray.origin();
