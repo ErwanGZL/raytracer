@@ -55,14 +55,13 @@ impl Scene {
                 let u: f64 = x as f64 / (image_width - 1) as f64;
                 let ray = self.camera.at(u, v);
                 let intersection = ray.intersect(&self.primitives);
-                let color = self.lighting(intersection);
-                // self.camera.image_as_mut().write(&color);
+                let color = self.lighting(intersection, &ray);
                 writeln!(file, "{} {} {}", color.r(), color.g(), color.b()).expect("writeln");
             }
         }
     }
 
-    fn lighting(&self, i: Option<Intersection>) -> Color {
+    fn lighting(&self, i: Option<Intersection>, camera_ray: &Ray) -> Color {
         match i {
             Some(i) => {
                 let i = Intersection::new(i.point() + i.normal(), i.primitive());
@@ -78,7 +77,7 @@ impl Scene {
                     }
                     if !is_shadow {
                         color = color + self.diffuse(&i, &l);
-                        // color = color + self.specular(&i);
+                        color = color + self.specular(&i, &camera_ray, &ray, &l);
                     }
                 }
                 color
@@ -94,7 +93,11 @@ impl Scene {
         let cos_theta = i.normal().dot(l.direction_from(i.point())).max(0.0);
         l.color() * l.intensity() as f64 * cos_theta
     }
-    fn specular(&self, _i: &Intersection) -> Color {
-        todo!()
+    fn specular(&self, i: &Intersection, camera_ray: &Ray, light_ray: &Ray, light: &Box<dyn Light>) -> Color {
+        let light_direction = light_ray.direction();
+        let camera_direction = -camera_ray.direction();
+        let reflexion_vector = 2.0 * (light_direction.dot(i.normal())) * i.normal() - light_direction;
+        let specular_factor = reflexion_vector.dot(camera_direction).max(0.0);
+        light.color() * specular_factor.powf(i.material().shininess()) * i.material().specular()
     }
 }
