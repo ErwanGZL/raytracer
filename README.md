@@ -5,7 +5,7 @@ Primitives:
 - [x] Plane
 
 Transformations:
-- [ ] Translation
+- [x] Translation
 
 Light:
 - [x] Directional light
@@ -38,7 +38,7 @@ Light:
 # COULD
 > Now that you’ve implemented the very basics of your raytracer, implement freely the following features:
 
-**Primitives: (0.5)**
+**Primitives: (1)**
 - [x] Limited cylinder (0.5)
 - [x] Limited cone (0.5)
 - [ ] Torus (1)
@@ -54,11 +54,11 @@ Light:
 - [ ] Transformation matrix (2)
 - [ ] Scene graph (2)
 
-**Light: (2)**
+**Light: (4)**
 - [x] Multiple directional lights (0.5)
 - [x] Multiple point lights (1)
 - [x] Colored light (0.5)
-- [ ] Phong reflection model (2)
+- [x] Phong reflection model (2)
 - [ ] Ambient occlusion (2)
 
 **Material: (0)**
@@ -86,4 +86,4 @@ Light:
 - [ ] Scene preview using a basic and fast renderer (2)
 - [ ] Automatic reload of the scene at file change (1)
 
-**Bonus points: (2.5)**
+**Bonus points: (5)**
