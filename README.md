@@ -70,7 +70,7 @@ Light:
 - [ ] Texturing from procedural generation of Perlin noise (1)
 - [ ] Normal mapping (2)
 
-**Scene configuration: (0)**
+**Scene configuration: (2)**
 - [x] Import a scene in a scene (2)
 - [ ] Set up antialiasing through supersampling (0.5)
 - [ ] Set up antialiasing through adaptative supersampling (1)
