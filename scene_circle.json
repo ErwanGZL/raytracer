@@ -49,7 +49,9 @@
                     "g": 0,
                     "b": 0
                 },
-                "specular_coefficient": 1
+                "alpha": 1,
+                "specular": 0.5,
+                "shininess": 25
             }
         },
         {
@@ -72,7 +74,9 @@
                     "g": 255,
                     "b": 0
                 },
-                "specular_coefficient": 1
+                "alpha": 1,
+                "specular": 0.5,
+                "shininess": 25
             }
         },
         {
@@ -95,7 +99,9 @@
                     "g": 0,
                     "b": 0
                 },
-                "specular_coefficient": 1
+                "alpha": 1,
+                "specular": 0.5,
+                "shininess": 25
             }
         }
     ],
