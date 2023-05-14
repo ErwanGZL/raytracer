@@ -1,5 +1,5 @@
 use super::{Circle, Intersection, Primitive};
-use crate::Ray;
+use crate::{math::Matrix, Ray};
 use std::f64::consts;
 
 use crate::{material::Material, math::Vector3D};
@@ -44,18 +44,28 @@ impl Primitive for Cone {
     }
 
     fn normal(&self, point: Vector3D) -> Vector3D {
-        (point - self.center).normalize()
+        let m = Matrix::rotation(self.rotation.x(), self.rotation.y(), self.rotation.z());
+        Vector3D::from_matrix(m * (point - self.center).normalize().to_matrix())
     }
 
     fn hits(&self, ray: &Ray) -> Vec<Intersection> {
+        let ray = ray.rotate(Matrix::rotation(
+            self.rotation.x(),
+            self.rotation.y(),
+            self.rotation.z(),
+        ));
         let mut v: Vec<Intersection> = Vec::new();
 
         // Calculate intersection with the bottom circle
         let bottom_center = self.center + Vector3D::new(0.0, 0., 0.0);
         let bottom_circle = Circle::new(bottom_center, self.radius, self.material);
-        let bottom_intersections = bottom_circle.hits(ray);
+        let bottom_intersections = bottom_circle.hits(&ray);
         for i in bottom_intersections.iter() {
-            v.push(Intersection::new((*i).point(), self));
+            let m = Matrix::rotation(-self.rotation.x(), -self.rotation.y(), -self.rotation.z());
+            let p = (*i).point();
+            let p = Vector3D::from_matrix(m * p.to_matrix());
+            let i = Intersection::new(p, self);
+            v.push(i);
         }
 
         let dir = ray.direction();
@@ -88,10 +98,11 @@ impl Primitive for Cone {
         let r = pos.y() + t * dir.y();
 
         if (r > self.center.y()) && (r < self.center.y() + self.height) {
-            v.push(Intersection::new(
-                Vector3D::new(pos.x() + t * dir.x(), r, pos.z() + t * dir.z()),
-                self,
-            ));
+            let m = Matrix::rotation(-self.rotation.x(), -self.rotation.y(), -self.rotation.z());
+            let p = Vector3D::new(pos.x() + t * dir.x(), r, pos.z() + t * dir.z());
+            let p = Vector3D::from_matrix(m * p.to_matrix());
+            let i = Intersection::new(p, self);
+            v.push(i);
         }
         v
     }
