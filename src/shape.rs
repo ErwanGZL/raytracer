@@ -35,6 +35,7 @@ pub fn from_json_prim(data: &Value) -> Box<dyn Primitive> {
         )),
         "cone" => Box::new(Cone::new(
             Vector3D::from_json(&data["position"]),
+            Vector3D::from_json(&data["rotation"]),
             Vector3D::from_json(&data["normal"]),
             data["height"].as_f64().unwrap() as f64,
             data["radius"].as_f64().unwrap() as f64,

@@ -7,6 +7,7 @@ use crate::{material::Material, math::Vector3D};
 #[derive(Debug)]
 pub struct Cone {
     center: Vector3D,
+    rotation: Vector3D,
     normal: Vector3D,
     height: f64,
     radius: f64,
@@ -16,6 +17,7 @@ pub struct Cone {
 impl Cone {
     pub fn new(
         center: Vector3D,
+        rotation: Vector3D,
         normal: Vector3D,
         height: f64,
         radius: f64,
@@ -23,6 +25,7 @@ impl Cone {
     ) -> Self {
         Cone {
             center,
+            rotation,
             normal,
             height,
             radius,

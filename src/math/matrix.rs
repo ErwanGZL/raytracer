@@ -65,6 +65,9 @@ impl Matrix<f64, 3, 3> {
         data[2][2] = 1.;
         Self { data }
     }
+    pub fn rotation(x: f64, y: f64, z: f64) -> Self {
+        Self::rotation_x(x) * Self::rotation_y(y) * Self::rotation_z(z)
+    }
 }
 
 impl<T, const ROWS: usize, const COLS: usize> std::fmt::Display for Matrix<T, ROWS, COLS>

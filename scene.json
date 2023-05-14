@@ -91,6 +91,36 @@
                 "specular": 0.5,
                 "shininess": 25
             }
+        },
+        {
+            "type": "cone",
+            "position": {
+                "x": -50,
+                "y": 10,
+                "z": 10
+            },
+            "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "radius": 25,
+            "height": 80,
+            "normal": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "material": {
+                "color": {
+                    "r": 200,
+                    "g": 50,
+                    "b": 255
+                },
+                "alpha": 1,
+                "specular": 0.5,
+                "shininess": 25
+            }
         }
     ],
     "lights": [
