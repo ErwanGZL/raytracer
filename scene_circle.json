@@ -1,0 +1,103 @@
+{
+    "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0
+    },
+    "ambient_light": {
+        "color": {
+            "r": 255,
+            "g": 255,
+            "b": 255
+        },
+        "coefficient": 0.7
+    },
+    "camera": {
+        "position": {
+            "x": 0,
+            "y": 20,
+            "z": -100
+        },
+        "direction": {
+            "x": 0,
+            "y": 0,
+            "z": 1
+        },
+        "fov": 72,
+        "image": {
+            "width": 720,
+            "height": 480,
+            "output_file": "out.ppm"
+        }
+    },
+    "objects": [
+        {
+            "type": "plane",
+            "position": {
+                "x": 0,
+                "y": -20,
+                "z": 0
+            },
+            "normal": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "material": {
+                "color": {
+                    "r": 255,
+                    "g": 0,
+                    "b": 0
+                },
+                "specular_coefficient": 1
+            }
+        },
+        {
+            "type": "cone",
+            "position": {
+                "x": 15,
+                "y": 10,
+                "z": -6
+            },
+            "normal": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "height": 24,
+            "radius": 10,
+            "material": {
+                "color": {
+                    "r": 0,
+                    "g": 255,
+                    "b": 0
+                },
+                "specular_coefficient": 1
+            }
+        },
+        {
+            "type": "cylinder",
+            "position": {
+                "x": -15,
+                "y": 10,
+                "z": 18
+            },
+            "normal": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "height": 24,
+            "radius": 10,
+            "material": {
+                "color": {
+                    "r": 255,
+                    "g": 0,
+                    "b": 0
+                },
+                "specular_coefficient": 1
+            }
+        }
+    ],
+    "lights": []
+}

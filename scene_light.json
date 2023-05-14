@@ -1,0 +1,92 @@
+{
+    "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0
+    },
+    "ambient_light": {
+        "color": {
+            "r": 255,
+            "g": 255,
+            "b": 255
+        },
+        "coefficient": 0.7
+    },
+    "camera": {
+        "position": {
+            "x": 0,
+            "y": 20,
+            "z": -100
+        },
+        "direction": {
+            "x": 0,
+            "y": 0,
+            "z": 1
+        },
+        "fov": 72,
+        "image": {
+            "width": 720,
+            "height": 480,
+            "output_file": "out.ppm"
+        }
+    },
+    "objects": [],
+    "lights": [
+        {
+            "type": "point",
+            "position": {
+                "x": 400,
+                "y": 500,
+                "z": 100
+            },
+            "color": {
+                "r": 255,
+                "g": 255,
+                "b": 255
+            },
+            "intensity": 0.6
+        },
+        {
+            "type": "point",
+            "position": {
+                "x": -400,
+                "y": 500,
+                "z": -400
+            },
+            "color": {
+                "r": 0,
+                "g": 0,
+                "b": 255
+            },
+            "intensity": 0.3
+        },
+        {
+            "type": "directional",
+            "position": {
+                "x": 400,
+                "y": 500,
+                "z": 100
+            },
+            "color": {
+                "r": 255,
+                "g": 255,
+                "b": 255
+            },
+            "intensity": 0.6
+        },
+        {
+            "type": "directional",
+            "position": {
+                "x": -400,
+                "y": 500,
+                "z": -100
+            },
+            "color": {
+                "r": 255,
+                "g": 255,
+                "b": 255
+            },
+            "intensity": 0.6
+        }
+    ]
+}

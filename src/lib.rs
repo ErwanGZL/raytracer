@@ -50,6 +50,23 @@ pub fn render_image(filename: &str) {
         primitives.push(primitive);
     }
 
+    // loads scenes
+    for scene_to_load in data["scenes"].as_array().unwrap() {
+        let scene_file = scene_to_load["file"].as_str().unwrap();
+        let mut file_load = File::open(scene_file).unwrap();
+        let mut buff_load = String::new();
+        file_load.read_to_string(&mut buff_load).unwrap();
+        let data_load: serde_json::Value = serde_json::from_str(&buff_load).unwrap();
+        for lights_data in data_load["lights"].as_array().unwrap() {
+            let light: Box<dyn Light> = from_json_light(lights_data);
+            lights.push(light);
+        }
+        for primitive_data in data_load["objects"].as_array().unwrap() {
+            let primitive: Box<dyn Primitive> = from_json_prim(primitive_data);
+            primitives.push(primitive);
+        }
+    }
+
     let mut scene = Scene::new(bg_color, ambient_light, camera, primitives, lights);
 
     println!("{:#?}", scene.camera());

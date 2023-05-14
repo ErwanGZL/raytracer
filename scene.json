@@ -10,7 +10,7 @@
             "g": 255,
             "b": 255
         },
-        "coefficient": 0.7
+        "coefficient": 0.2
     },
     "camera": {
         "position": {
@@ -51,45 +51,15 @@
                 },
                 "specular_coefficient": 1
             }
-        },
-        {
-            "type": "cone",
-            "position": {
-                "x": 15,
-                "y": 10,
-                "z": -6
-            },
-            "normal": {
-                "x": 0,
-                "y": 0,
-                "z": 0
-            },
-            "height": 24,
-            "radius": 10,
-            "material": {
-                "color": {
-                    "r": 0,
-                    "g": 255,
-                    "b": 0
-                },
-                "specular_coefficient": 1
-            }
         }
     ],
-    "lights": [
+    "lights": [],
+    "scenes": [
         {
-            "type": "point",
-            "position": {
-                "x": 400,
-                "y": 500,
-                "z": 100
-            },
-            "color": {
-                "r": 255,
-                "g": 255,
-                "b": 255
-            },
-            "intensity": 0.6
+            "file": "scene_circle.json"
+        },
+        {
+            "file": "scene_light.json"
         }
     ]
 }
