@@ -8,23 +8,38 @@ use std::error::Error;
 
 pub struct Material {
     color: Color,
-    transparency: f64,
+    alpha: f64,
+    specular: f64,
+    shininess: f64,
 }
 
 impl Material {
-    pub fn new(color: Color, transparency: f64) -> Material {
+    pub fn new(color: Color, alpha: f64, specular: f64, shininess: f64) -> Material {
         Material {
             color,
-            transparency,
+            alpha,
+            specular,
+            shininess,
         }
     }
     pub fn color(&self) -> Color {
         self.color
     }
+    pub fn specular(&self) -> f64 {
+        self.specular
+    }
+    pub fn alpha(&self) -> f64 {
+        self.alpha
+    }
+    pub fn shininess(&self) -> f64 {
+        self.shininess.clamp(0.0, 128.0)
+    }
 
     pub fn from_json(data: &Value) -> Material {
         let color = Color::from_json(&data["color"]);
-        let transparency = data["specular_coefficient"].as_f64().unwrap();
-        return Material::new(color, transparency);
+        let alpha = data["alpha"].as_f64().unwrap();
+        let specular = data["specular"].as_f64().unwrap();
+        let shininess = data["shininess"].as_f64().unwrap();
+        return Material::new(color, alpha, specular, shininess);
     }
 }
