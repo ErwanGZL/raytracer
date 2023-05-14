@@ -10,7 +10,7 @@
             "g": 255,
             "b": 255
         },
-        "coefficient": 0.2
+        "coefficient": 0.7
     },
     "camera": {
         "position": {
@@ -25,8 +25,8 @@
         },
         "fov": 72,
         "image": {
-            "width": 1280,
-            "height": 720,
+            "width": 720,
+            "height": 480,
             "output_file": "out.ppm"
         }
     },
@@ -45,61 +45,59 @@
             },
             "material": {
                 "color": {
-                    "r": 0,
+                    "r": 255,
                     "g": 0,
-                    "b": 255
+                    "b": 0
                 },
-                "alpha": 1,
-                "specular": 0,
-                "shininess": 25
+                "specular_coefficient": 1
             }
         },
         {
-            "type": "sphere",
+            "type": "cone",
+            "position": {
+                "x": 15,
+                "y": 10,
+                "z": -6
+            },
+            "normal": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "height": 24,
+            "radius": 10,
+            "material": {
+                "color": {
+                    "r": 0,
+                    "g": 255,
+                    "b": 0
+                },
+                "specular_coefficient": 1
+            }
+        },
+        {
+            "type": "cylinder",
             "position": {
                 "x": -15,
-                "y": 0,
-                "z": 5
+                "y": 10,
+                "z": 18
             },
-            "radius": 25,
+            "normal": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "height": 24,
+            "radius": 10,
             "material": {
                 "color": {
                     "r": 255,
                     "g": 0,
                     "b": 0
                 },
-                "alpha": 1,
-                "specular": 1,
-                "shininess": 25
-            }
-        },
-        {
-            "type": "sphere",
-            "position": {
-                "x": 25,
-                "y": 10,
-                "z": 10
-            },
-            "radius": 25,
-            "material": {
-                "color": {
-                    "r": 0,
-                    "g": 255,
-                    "b": 255
-                },
-                "alpha": 1,
-                "specular": 0.5,
-                "shininess": 25
+                "specular_coefficient": 1
             }
         }
     ],
-    "lights": [],
-    "scenes": [
-        {
-            "file": "scene_circle.json"
-        },
-        {
-            "file": "scene_light.json"
-        }
-    ]
+    "lights": []
 }
