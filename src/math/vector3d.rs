@@ -1,6 +1,8 @@
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
+use super::Matrix;
+
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 
 pub struct Vector3D {
@@ -73,6 +75,15 @@ impl Vector3D {
 
     pub fn direction_to(&self, other: Self) -> Self {
         (other - *self).normalize()
+    }
+
+    // transform the vector to a matrix
+    pub fn to_matrix(&self) -> Matrix<f64, 3, 1> {
+        Matrix::new([[self.x], [self.y], [self.z]])
+    }
+    // transform the result of an applied rotation matrix to a vector
+    pub fn from_matrix(matrix: Matrix<f64, 3, 1>) -> Self {
+        Self::new(matrix[0][0], matrix[1][0], matrix[2][0])
     }
 }
 

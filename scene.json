@@ -25,8 +25,8 @@
         },
         "fov": 72,
         "image": {
-            "width": 1280,
-            "height": 720,
+            "width": 720,
+            "height": 480,
             "output_file": "out.ppm"
         }
     },
@@ -51,6 +51,37 @@
                 },
                 "alpha": 1,
                 "specular": 0,
+                "shininess": 25
+            }
+        },
+
+        {
+            "type": "cylinder",
+            "position": {
+                "x": 0,
+                "y": 0,
+                "z": -10
+            },
+            "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 60
+            },
+            "radius": 25,
+            "height": 50,
+            "normal": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "material": {
+                "color": {
+                    "r": 200,
+                    "g": 50,
+                    "b": 255
+                },
+                "alpha": 1,
+                "specular": 0.5,
                 "shininess": 25
             }
         },
@@ -93,13 +124,22 @@
             }
         }
     ],
-    "lights": [],
-    "scenes": [
+    "lights": [
         {
-            "file": "scene_circle.json"
-        },
-        {
-            "file": "scene_light.json"
+            "type": "point",
+            "position": {
+                "x": 400,
+                "y": 500,
+                "z": 100
+            },
+            "color": {
+                "r": 255,
+                "g": 255,
+                "b": 255
+            },
+            "intensity": 0.6
         }
+    ],
+    "scenes": [
     ]
 }

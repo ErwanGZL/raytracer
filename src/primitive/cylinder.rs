@@ -1,18 +1,20 @@
 use super::{Circle, Intersection, Primitive};
-use crate::{material::Material, math::Vector3D, ray::Ray};
+use crate::{material::Material, math::{Vector3D, Matrix}, ray::Ray};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Cylinder {
     center: Vector3D,
+    rotation: Vector3D,
     radius: f64,
     height: f64,
     material: Material,
 }
 
 impl Cylinder {
-    pub fn new(center: Vector3D, radius: f64, height: f64, color: Material) -> Self {
+    pub fn new(center: Vector3D, rotation: Vector3D, radius: f64, height: f64, color: Material) -> Self {
         Cylinder {
             center,
+            rotation,
             radius,
             height,
             material: color,
@@ -30,22 +32,35 @@ impl Primitive for Cylinder {
     }
 
     fn hits(&self, ray: &Ray) -> Vec<Intersection> {
+        let ray = ray.rotate(Matrix::rotation(
+            self.rotation.x(),
+            self.rotation.y(),
+            self.rotation.z(),
+        ));
         let mut vec_i: Vec<Intersection> = Vec::new();
 
         // Calculate intersection with the top circle
         let top_center = self.center + Vector3D::new(0.0, self.height, 0.0);
         let top_circle = Circle::new(top_center, self.radius, self.material);
-        let top_intersections = top_circle.hits(ray);
+        let top_intersections = top_circle.hits(&ray);
         for i in top_intersections.iter() {
-            vec_i.push(Intersection::new((*i).point(), self));
+            let m = Matrix::rotation(-self.rotation.x(), -self.rotation.y(), -self.rotation.z());
+            let p = (*i).point();
+            let p = Vector3D::from_matrix(m * p.to_matrix());
+            let i = Intersection::new(p, self);
+            vec_i.push(i);
         }
 
         // Calculate intersection with the bottom circle
         let bottom_center = self.center + Vector3D::new(0.0, 0., 0.0);
         let bottom_circle = Circle::new(bottom_center, self.radius, self.material);
-        let bottom_intersections = bottom_circle.hits(ray);
+        let bottom_intersections = bottom_circle.hits(&ray);
         for i in bottom_intersections.iter() {
-            vec_i.push(Intersection::new((*i).point(), self));
+            let m = Matrix::rotation(-self.rotation.x(), -self.rotation.y(), -self.rotation.z());
+            let p = (*i).point();
+            let p = Vector3D::from_matrix(m * p.to_matrix());
+            let i = Intersection::new(p, self);
+            vec_i.push(i);
         }
 
         let dir = ray.direction();
@@ -78,7 +93,11 @@ impl Primitive for Cylinder {
         // remove = infinite
         // Check intersection with the side of the cylinder
         if r >= self.center.y() && r <= self.center.y() + self.height {
-            vec_i.push(Intersection::new(ray.origin() + ray.direction() * t, self));
+            let m = Matrix::rotation(-self.rotation.x(), -self.rotation.y(), -self.rotation.z());
+            let p = ray.origin() + ray.direction() * t;
+            let p = Vector3D::from_matrix(m * p.to_matrix());
+            let i = Intersection::new(p, self);
+            vec_i.push(i);
         }
         vec_i
     }
