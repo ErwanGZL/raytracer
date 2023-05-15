@@ -1,5 +1,5 @@
 use crate::{
-    math::Vector3D,
+    math::{Vector3D, Matrix},
     primitive::{self, Intersection, Primitive},
 };
 
@@ -47,5 +47,11 @@ impl Ray {
             Some((_, i)) => Some(*i),
             None => None,
         }
+    }
+    // rotate the ray by the given rotation matrix
+    pub fn rotate(&self, rotation: Matrix<f64, 3, 3>) -> Self {
+        let origin = Vector3D::from_matrix(rotation * self.origin.to_matrix());
+        let direction = Vector3D::from_matrix(rotation * self.direction.to_matrix());
+        Self::new(origin, direction)
     }
 }

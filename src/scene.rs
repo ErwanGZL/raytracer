@@ -1,5 +1,6 @@
 use super::Vector3D;
 use crate::light::{self, Dot, Light};
+use crate::math::Matrix;
 use crate::primitive::{Intersection, Sphere};
 use crate::{camera::Camera, material::Color, primitive::Primitive};
 use crate::{material::Material, ray::Ray};

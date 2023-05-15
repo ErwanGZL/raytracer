@@ -30,7 +30,7 @@ Primitives:
 - [x] Cone
 
 Transformation:
-- [ ] Rotation
+- [x] Rotation
 
 Light:
 - [x] Drop shadows
@@ -48,10 +48,10 @@ Light:
 - [ ] Fractals (2)
 - [ ] Möbius strip (2)
 
-**Transformations: (0)**
+**Transformations: (2)**
 - [ ] Scale (0.5)
 - [ ] Shear (0.5)
-- [ ] Transformation matrix (2)
+- [x] Transformation matrix (2)
 - [ ] Scene graph (2)
 
 **Light: (4)**
@@ -70,9 +70,9 @@ Light:
 - [ ] Texturing from procedural generation of Perlin noise (1)
 - [ ] Normal mapping (2)
 
-**Scene configuration: (2)**
+**Scene configuration: (2.5)**
 - [x] Import a scene in a scene (2)
-- [ ] Set up antialiasing through supersampling (0.5)
+- [x] Set up antialiasing through supersampling (0.5)
 - [ ] Set up antialiasing through adaptative supersampling (1)
 
 **Optimizations: (0)**
@@ -86,4 +86,4 @@ Light:
 - [ ] Scene preview using a basic and fast renderer (2)
 - [ ] Automatic reload of the scene at file change (1)
 
-**Bonus points: (5)**
+**Bonus points: (9.5)**

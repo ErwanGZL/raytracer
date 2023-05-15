@@ -39,6 +39,7 @@ impl<T, const ROWS: usize, const COLS: usize> Matrix<T, ROWS, COLS> {
 
 impl Matrix<f64, 3, 3> {
     pub fn rotation_x(angle: f64) -> Self {
+        let angle = angle.to_radians();
         let mut data = [[0.; 3]; 3];
         data[0][0] = 1.;
         data[1][1] = angle.cos();
@@ -48,6 +49,7 @@ impl Matrix<f64, 3, 3> {
         Self { data }
     }
     pub fn rotation_y(angle: f64) -> Self {
+        let angle = angle.to_radians();
         let mut data = [[0.; 3]; 3];
         data[0][0] = angle.cos();
         data[0][2] = angle.sin();
@@ -57,6 +59,7 @@ impl Matrix<f64, 3, 3> {
         Self { data }
     }
     pub fn rotation_z(angle: f64) -> Self {
+        let angle = angle.to_radians();
         let mut data = [[0.; 3]; 3];
         data[0][0] = angle.cos();
         data[0][1] = -angle.sin();
@@ -64,6 +67,9 @@ impl Matrix<f64, 3, 3> {
         data[1][1] = angle.cos();
         data[2][2] = 1.;
         Self { data }
+    }
+    pub fn rotation(x: f64, y: f64, z: f64) -> Self {
+        Self::rotation_x(x) * Self::rotation_y(y) * Self::rotation_z(z)
     }
 }
 
