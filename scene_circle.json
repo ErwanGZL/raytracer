@@ -10,7 +10,7 @@
             "g": 255,
             "b": 255
         },
-        "coefficient": 0.2
+        "coefficient": 0.7
     },
     "camera": {
         "position": {
@@ -45,40 +45,59 @@
             },
             "material": {
                 "color": {
-                    "r": 0,
+                    "r": 255,
                     "g": 0,
-                    "b": 255
+                    "b": 0
                 },
                 "alpha": 1,
-                "specular": 0,
+                "specular": 0.5,
                 "shininess": 25
             }
         },
-
         {
             "type": "cone",
             "position": {
-                "x": 0,
-                "y": 0,
-                "z": -10
+                "x": 15,
+                "y": 10,
+                "z": -6
             },
-            "rotation": {
-                "x": 0,
-                "y": 0,
-                "z": 60
-            },
-            "radius": 25,
-            "height": 50,
             "normal": {
                 "x": 0,
-                "y": 1,
+                "y": 0,
                 "z": 0
             },
+            "height": 24,
+            "radius": 10,
             "material": {
                 "color": {
-                    "r": 200,
-                    "g": 50,
-                    "b": 255
+                    "r": 0,
+                    "g": 255,
+                    "b": 0
+                },
+                "alpha": 1,
+                "specular": 0.5,
+                "shininess": 25
+            }
+        },
+        {
+            "type": "cylinder",
+            "position": {
+                "x": -15,
+                "y": 10,
+                "z": 18
+            },
+            "normal": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "height": 24,
+            "radius": 10,
+            "material": {
+                "color": {
+                    "r": 255,
+                    "g": 0,
+                    "b": 0
                 },
                 "alpha": 1,
                 "specular": 0.5,
@@ -86,13 +105,5 @@
             }
         }
     ],
-    "lights": [],
-    "scenes": [
-        {
-            "file": "scene_circle.json"
-        },
-        {
-            "file": "scene_light.json"
-        }
-    ]
+    "lights": []
 }
