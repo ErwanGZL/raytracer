@@ -52,10 +52,25 @@ impl Scene {
         for y in 0..image_height {
             let v: f64 = y as f64 / (image_height - 1) as f64;
             for x in (0..image_width).rev() {
-                let u: f64 = x as f64 / (image_width - 1) as f64;
-                let ray = self.camera.at(u, v);
-                let intersection = ray.intersect(&self.primitives);
-                let color = self.lighting(intersection, &ray);
+                let mut r_color = 0;
+                let mut g_color = 0;
+                let mut b_color = 0;
+                let sample_count = 9;
+                for _ in 0..sample_count {
+                    let u: f64 = (x as f64 + rand::random::<f64>()) / (image_width - 1) as f64;
+                    let v: f64 = (y as f64 + rand::random::<f64>()) / (image_height - 1) as f64;
+                    let ray = self.camera().at(u, v);
+                    let intersection = ray.intersect(&self.primitives);
+                    let color = self.lighting(intersection, &ray);
+                    r_color += color.r() as u32;
+                    g_color += color.g() as u32;
+                    b_color += color.b() as u32;
+                }
+                let color = Color::new(
+                    (r_color / sample_count) as u8,
+                    (g_color / sample_count) as u8,
+                    (b_color / sample_count) as u8,
+                );
                 writeln!(file, "{} {} {}", color.r(), color.g(), color.b()).expect("writeln");
             }
         }
@@ -93,10 +108,17 @@ impl Scene {
         let cos_theta = i.normal().dot(l.direction_from(i.point())).max(0.0);
         l.color() * l.intensity() as f64 * cos_theta
     }
-    fn specular(&self, i: &Intersection, camera_ray: &Ray, light_ray: &Ray, light: &Box<dyn Light>) -> Color {
+    fn specular(
+        &self,
+        i: &Intersection,
+        camera_ray: &Ray,
+        light_ray: &Ray,
+        light: &Box<dyn Light>,
+    ) -> Color {
         let light_direction = light_ray.direction();
         let camera_direction = -camera_ray.direction();
-        let reflexion_vector = 2.0 * (light_direction.dot(i.normal())) * i.normal() - light_direction;
+        let reflexion_vector =
+            2.0 * (light_direction.dot(i.normal())) * i.normal() - light_direction;
         let specular_factor = reflexion_vector.dot(camera_direction).max(0.0);
         light.color() * specular_factor.powf(i.material().shininess()) * i.material().specular()
     }
